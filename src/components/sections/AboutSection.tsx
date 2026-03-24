@@ -1,5 +1,6 @@
 import { FadeIn } from "@/components/FadeIn";
 import { Award } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const awards = [
   {
@@ -11,6 +12,57 @@ const awards = [
     desc: "Driving cross-team collaboration that improved workflow efficiency by 15%."
   }
 ];
+
+function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const current = ref.current;
+    if (!current) return;
+
+    let frame = 0;
+    let started = false;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || started) return;
+        started = true;
+
+        const startTime = performance.now();
+        const duration = 1200;
+
+        const animate = (now: number) => {
+          const progress = Math.min((now - startTime) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setCount(Math.round(value * eased));
+
+          if (progress < 1) {
+            frame = requestAnimationFrame(animate);
+          }
+        };
+
+        frame = requestAnimationFrame(animate);
+        observer.disconnect();
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(current);
+
+    return () => {
+      observer.disconnect();
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [value]);
+
+  return (
+    <p ref={ref} className="text-3xl font-bold text-primary tabular-nums">
+      {count}
+      {suffix}
+    </p>
+  );
+}
 
 export function AboutSection() {
   return (
@@ -42,19 +94,19 @@ export function AboutSection() {
               </div>
             </FadeIn>
 
-            <FadeIn delay={300}>
-              <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {awards.map((award) => (
-                  <div key={award.title} className="flex gap-3 p-4 bg-card border rounded-xl shadow-sm">
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {awards.map((award, idx) => (
+                <FadeIn key={award.title} delay={320 + idx * 120}>
+                  <div className="flex gap-3 p-4 bg-card border rounded-xl shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all duration-300">
                     <Award size={20} className="text-primary shrink-0 mt-0.5" />
                     <div>
                       <p className="font-semibold text-sm text-foreground">{award.title}</p>
                       <p className="text-xs text-muted-foreground mt-1">{award.desc}</p>
                     </div>
                   </div>
-                ))}
-              </div>
-            </FadeIn>
+                </FadeIn>
+              ))}
+            </div>
           </div>
           
           <div className="lg:col-span-4 lg:col-start-9">
@@ -70,12 +122,12 @@ export function AboutSection() {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-4 text-center">
-                <div className="p-4 bg-card border rounded-xl">
-                  <p className="text-3xl font-bold text-primary">7+</p>
+                <div className="p-4 bg-card border rounded-xl hover:-translate-y-0.5 hover:shadow-md transition-all duration-300">
+                  <CountUp value={7} suffix="+" />
                   <p className="text-xs text-muted-foreground mt-1">Years Experience</p>
                 </div>
-                <div className="p-4 bg-card border rounded-xl">
-                  <p className="text-3xl font-bold text-primary">50+</p>
+                <div className="p-4 bg-card border rounded-xl hover:-translate-y-0.5 hover:shadow-md transition-all duration-300">
+                  <CountUp value={50} suffix="+" />
                   <p className="text-xs text-muted-foreground mt-1">Teams Impacted</p>
                 </div>
               </div>

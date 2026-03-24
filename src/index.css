@@ -52,36 +52,36 @@
 
 /* LIGHT MODE */
 :root {
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
+  --background: 30 11% 96%;
+  --foreground: 220 15% 15%;
 
   --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
-  --card-border: 214.3 31.8% 91.4%;
+  --card-foreground: 220 15% 15%;
+  --card-border: 30 8% 84%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --popover-border: 214.3 31.8% 91.4%;
+  --popover-foreground: 220 15% 15%;
+  --popover-border: 30 8% 84%;
 
-  /* Corporate Blue Accent */
-  --primary: 217 91% 60%;
-  --primary-foreground: 210 40% 98%;
+  /* Brown Accent */
+  --primary: 27 40% 39%; /* #8B5E3C */
+  --primary-foreground: 36 33% 95%;
   
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 30 8% 93%;
+  --secondary-foreground: 220 15% 15%;
 
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
+  --muted: 30 8% 93%;
+  --muted-foreground: 220 10% 40%;
 
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
+  --accent: 30 10% 92%;
+  --accent-foreground: 220 15% 15%;
 
   --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
+  --destructive-foreground: 36 33% 95%;
 
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 217 91% 60%;
+  --border: 30 8% 84%;
+  --input: 30 8% 84%;
+  --ring: 27 35% 33%; /* #6F4E37 */
 
   --radius: 0.75rem;
 
@@ -93,36 +93,36 @@
 }
 
 .dark {
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
+  --background: 220 14% 10%;
+  --foreground: 30 12% 92%;
 
-  --card: 222.2 84% 4.9%;
-  --card-foreground: 210 40% 98%;
-  --card-border: 217.2 32.6% 17.5%;
+  --card: 220 14% 12%;
+  --card-foreground: 30 12% 92%;
+  --card-border: 220 10% 20%;
 
-  --popover: 222.2 84% 4.9%;
-  --popover-foreground: 210 40% 98%;
-  --popover-border: 217.2 32.6% 17.5%;
+  --popover: 220 14% 12%;
+  --popover-foreground: 30 12% 92%;
+  --popover-border: 220 10% 20%;
 
-  /* Corporate Blue Accent - slightly brighter for dark mode */
-  --primary: 217 91% 65%;
-  --primary-foreground: 222.2 47.4% 11.2%;
+  /* Brown Accent - slightly brighter for dark mode */
+  --primary: 27 29% 46%; /* #A47148 */
+  --primary-foreground: 24 17% 11%;
 
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
+  --secondary: 220 10% 18%;
+  --secondary-foreground: 30 12% 92%;
 
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
+  --muted: 220 10% 18%;
+  --muted-foreground: 30 8% 72%;
 
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
+  --accent: 220 10% 18%;
+  --accent-foreground: 30 12% 92%;
 
   --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 210 40% 98%;
+  --destructive-foreground: 30 12% 92%;
 
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 217 91% 65%;
+  --border: 220 10% 20%;
+  --input: 220 10% 20%;
+  --ring: 27 40% 39%; /* #8B5E3C */
 
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.5);
@@ -134,6 +134,21 @@
 @layer base {
   * {
     @apply border-border;
+  }
+
+  .theme-transition,
+  .theme-transition *,
+  .theme-transition *::before,
+  .theme-transition *::after {
+    transition-property: background-color, color, border-color, fill, stroke, box-shadow;
+    transition-duration: 300ms !important;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+
+  :where(a, button, [role="button"], input, textarea, select) {
+    transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+    transition-duration: 280ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   }
   
   html {
@@ -180,4 +195,22 @@
   opacity: 1;
   transform: none;
   visibility: visible;
+}
+
+/* Hero intro animation */
+.hero-intro {
+  animation: heroIntro 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes heroIntro {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
 }

@@ -14,12 +14,30 @@ const navLinks = [
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("#about");
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+
+      const sections = navLinks
+        .map((link) => document.querySelector(link.href) as HTMLElement | null)
+        .filter(Boolean) as HTMLElement[];
+
+      const scrollPos = window.scrollY + 140;
+      let current = "#about";
+
+      for (const section of sections) {
+        if (scrollPos >= section.offsetTop) {
+          current = `#${section.id}`;
+        }
+      }
+
+      setActiveSection(current);
     };
+
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -65,9 +83,20 @@ export function Navbar() {
               key={link.name}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className={cn(
+                "relative text-sm font-medium px-1 py-0.5 transition-colors",
+                activeSection === link.href
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
             >
               {link.name}
+              <span
+                className={cn(
+                  "absolute left-0 -bottom-1 h-0.5 rounded-full bg-primary transition-all duration-300 ease-out",
+                  activeSection === link.href ? "w-full opacity-100" : "w-0 opacity-0"
+                )}
+              />
             </a>
           ))}
           

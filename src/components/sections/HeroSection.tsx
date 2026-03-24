@@ -1,7 +1,22 @@
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { FadeIn } from "@/components/FadeIn";
+import { useEffect, useState } from "react";
 
 export function HeroSection() {
+  const [cursor, setCursor] = useState({ x: 50, y: 50 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setCursor({
+        x: (e.clientX / window.innerWidth) * 100,
+        y: (e.clientY / window.innerHeight) * 100,
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
   const handleScroll = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
@@ -16,9 +31,17 @@ export function HeroSection() {
   return (
     <section 
       id="hero" 
-      className="relative min-h-[100svh] flex flex-col justify-center pt-20 overflow-hidden"
+      className="relative min-h-[100svh] flex flex-col justify-center pt-20 overflow-hidden hero-intro"
     >
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] opacity-50 pointer-events-none -z-10" />
+      <div
+        className="absolute w-[380px] h-[380px] rounded-full bg-primary/10 blur-3xl pointer-events-none -z-10 transition-transform duration-700 ease-out"
+        style={{
+          left: `${cursor.x}%`,
+          top: `${cursor.y}%`,
+          transform: "translate(-50%, -50%)",
+        }}
+      />
 
       <div className="max-w-6xl mx-auto px-6 md:px-12 w-full">
         <FadeIn delay={100}>
@@ -29,7 +52,7 @@ export function HeroSection() {
         
         <FadeIn delay={200}>
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tight text-foreground max-w-4xl leading-[1.1]">
-            Hi, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">Vineet</span> — Staff Engineer & AI Builder.
+            Hi, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6F4E37] via-[#8B5E3C] to-[#A47148]">Vineet</span> — Staff Engineer & AI Builder.
           </h1>
         </FadeIn>
         

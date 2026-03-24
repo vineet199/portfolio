@@ -1,6 +1,15 @@
 import { FadeIn } from "@/components/FadeIn";
 import { FolderGit2, ExternalLink, Folder } from "lucide-react";
 
+type Project = {
+  title: string;
+  summary: string;
+  tech: string[];
+  github: string;
+  demo: string | null;
+  featured?: boolean;
+};
+
 const projects = [
   {
     title: "Smart Workspaces",
@@ -26,7 +35,34 @@ const projects = [
     demo: null,
     featured: true
   }
-];
+] satisfies Project[];
+
+const personalProjects = [
+  {
+    title: "Personal Portfolio",
+    summary:
+      "A minimal portfolio website built with React and TypeScript to present my work, experience, and ways to connect.",
+    tech: ["React", "TypeScript", "Vite", "Tailwind CSS"],
+    github: "https://github.com",
+    demo: null,
+  },
+  {
+    title: "Task Tracker",
+    summary:
+      "A productivity app for managing daily tasks with filtering, status tracking, and persistent local storage.",
+    tech: ["React", "TypeScript", "LocalStorage", "CSS"],
+    github: "https://github.com",
+    demo: null,
+  },
+  {
+    title: "Weather Dashboard",
+    summary:
+      "A weather dashboard that fetches real-time forecast data from public APIs with a clean, responsive UI.",
+    tech: ["JavaScript", "REST APIs", "HTML", "CSS"],
+    github: "https://github.com",
+    demo: null,
+  },
+] satisfies Project[];
 
 export function ProjectsSection() {
   return (
@@ -45,13 +81,13 @@ export function ProjectsSection() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {projects.map((project, idx) => (
             <FadeIn key={project.title} delay={idx * 150} className="flex">
-              <div className="group relative bg-card border rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:border-primary/50 transition-colors duration-300 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1">
+              <div className="group relative bg-card border rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1">
                 
                 <div className="absolute -inset-x-4 -top-24 -bottom-4 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
                 <div className="relative z-10">
                   <div className="flex justify-between items-start mb-6">
-                    <div className="p-3 bg-secondary rounded-xl text-primary">
+                    <div className="p-3 bg-secondary rounded-xl text-primary transition-transform duration-500 group-hover:rotate-3 group-hover:scale-105">
                       <Folder size={24} />
                     </div>
                     <div className="flex gap-3">
@@ -78,7 +114,7 @@ export function ProjectsSection() {
                     </div>
                   </div>
 
-                  <h4 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
+                  <h4 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">
                     {project.title}
                   </h4>
                   <p className="text-muted-foreground mb-8 leading-relaxed">
@@ -89,7 +125,74 @@ export function ProjectsSection() {
                 <div className="relative z-10 mt-auto">
                   <ul className="flex flex-wrap gap-2 text-sm font-mono text-muted-foreground/80">
                     {project.tech.map((tech) => (
-                      <li key={tech} className="bg-background border px-2 py-0.5 rounded">
+                      <li key={tech} className="bg-background border px-2 py-0.5 rounded transition-colors duration-300 group-hover:bg-secondary/70">
+                        {tech}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+
+        <FadeIn delay={200}>
+          <div className="flex items-center gap-4 mt-20 mb-10">
+            <div>
+              <h3 className="text-2xl md:text-3xl font-display font-bold">Personal Projects</h3>
+              <p className="text-sm text-muted-foreground mt-2">Independent builds and experiments.</p>
+            </div>
+            <div className="h-px bg-border flex-grow ml-8 hidden md:block"></div>
+          </div>
+        </FadeIn>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {personalProjects.map((project, idx) => (
+            <FadeIn key={project.title} delay={idx * 150} className="flex">
+              <div className="group relative bg-card border rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1">
+                <div className="absolute -inset-x-4 -top-24 -bottom-4 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                <div className="relative z-10">
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="p-3 bg-secondary rounded-xl text-primary transition-transform duration-500 group-hover:rotate-3 group-hover:scale-105">
+                      <Folder size={24} />
+                    </div>
+                    <div className="flex gap-3">
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-foreground transition-colors"
+                        aria-label={`GitHub repository for ${project.title}`}
+                      >
+                        <FolderGit2 size={20} />
+                      </a>
+                      {project.demo && (
+                        <a
+                          href={project.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-primary transition-colors"
+                          aria-label={`Live demo of ${project.title}`}
+                        >
+                          <ExternalLink size={20} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  <h4 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">
+                    {project.title}
+                  </h4>
+                  <p className="text-muted-foreground mb-8 leading-relaxed">
+                    {project.summary}
+                  </p>
+                </div>
+
+                <div className="relative z-10 mt-auto">
+                  <ul className="flex flex-wrap gap-2 text-sm font-mono text-muted-foreground/80">
+                    {project.tech.map((tech) => (
+                      <li key={tech} className="bg-background border px-2 py-0.5 rounded transition-colors duration-300 group-hover:bg-secondary/70">
                         {tech}
                       </li>
                     ))}

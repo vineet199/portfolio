@@ -1,0 +1,5 @@
+Before running the development server with `npm run dev`, always execute `pkill node` first.
+
+Preferred sequence:
+1. `pkill node`
+2. `PORT=<port> BASE_PATH=<base-path> npm run dev`
