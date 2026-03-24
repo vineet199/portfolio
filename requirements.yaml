@@ -1,0 +1,9 @@
+packages:
+  "clsx": "Utility for constructing className strings conditionally"
+  "tailwind-merge": "Utility function to efficiently merge Tailwind CSS classes"
+
+notes:
+  - This is a purely frontend portfolio application.
+  - The contact form is wired with local React state to simulate an API request (loading state -> success message) since there is no backend.
+  - Dark mode is implemented using a custom hook syncing with a 'dark' class on the HTML element and localStorage.
+  - Scroll animations use a custom IntersectionObserver hook for maximum performance without external heavy animation libraries.

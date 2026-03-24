@@ -1,0 +1,88 @@
+import { FadeIn } from "@/components/FadeIn";
+import { Award } from "lucide-react";
+
+const awards = [
+  {
+    title: "Cisco Stock Award — $10,000",
+    desc: "Youngest recipient, awarded for exceptional impact across multiple engineering orgs."
+  },
+  {
+    title: "Cisco \"Connect Everything\" Award",
+    desc: "Driving cross-team collaboration that improved workflow efficiency by 15%."
+  }
+];
+
+export function AboutSection() {
+  return (
+    <section id="about" className="py-24 md:py-32">
+      <div className="max-w-6xl mx-auto px-6 md:px-12">
+        <FadeIn>
+          <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-3">01. About Me</h2>
+        </FadeIn>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+          <div className="lg:col-span-8">
+            <FadeIn delay={100}>
+              <h3 className="text-3xl md:text-4xl font-display font-bold mb-6">
+                Setting engineering standards that scale — from AI tooling to global cloud platforms.
+              </h3>
+            </FadeIn>
+            
+            <FadeIn delay={200}>
+              <div className="prose prose-lg dark:prose-invert text-muted-foreground space-y-4">
+                <p>
+                  I'm a staff-level engineer with 7 years of experience driving technical direction at <strong className="text-foreground">Oracle Cloud Infrastructure</strong> and <strong className="text-foreground">Cisco Systems</strong>. I specialise in building AI-powered developer tooling, large-scale frontend platforms, and cloud infrastructure that teams rely on at enterprise scale.
+                </p>
+                <p>
+                  At Oracle, I've authored canonical testing frameworks adopted across 50+ OCI service teams and designed an AI agent that auto-generates production-ready components — cutting build time by an estimated 60–70%. At Cisco, I architected "Smart Workspaces", a location analytics platform that became the flagship product and drove a ~50% increase in revenue.
+                </p>
+                <p>
+                  I care deeply about engineering quality, developer experience, and shipping things that move the needle — not just the lines of code.
+                </p>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={300}>
+              <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {awards.map((award) => (
+                  <div key={award.title} className="flex gap-3 p-4 bg-card border rounded-xl shadow-sm">
+                    <Award size={20} className="text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-sm text-foreground">{award.title}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{award.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </FadeIn>
+          </div>
+          
+          <div className="lg:col-span-4 lg:col-start-9">
+            <FadeIn delay={300}>
+              <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl group border border-border">
+                <img 
+                  src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=800&fit=crop&auto=format" 
+                  alt="Developer workspace" 
+                  className="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
+
+              <div className="mt-6 grid grid-cols-2 gap-4 text-center">
+                <div className="p-4 bg-card border rounded-xl">
+                  <p className="text-3xl font-bold text-primary">7+</p>
+                  <p className="text-xs text-muted-foreground mt-1">Years Experience</p>
+                </div>
+                <div className="p-4 bg-card border rounded-xl">
+                  <p className="text-3xl font-bold text-primary">50+</p>
+                  <p className="text-xs text-muted-foreground mt-1">Teams Impacted</p>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
