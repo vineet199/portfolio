@@ -39,26 +39,18 @@ const projects = [
 
 const personalProjects = [
   {
-    title: "Personal Portfolio",
+    title: "LLM-Powered Migration & Visa Assistant",
     summary:
-      "A minimal portfolio website built with React and TypeScript to present my work, experience, and ways to connect.",
-    tech: ["React", "TypeScript", "Vite", "Tailwind CSS"],
+      "A full-stack platform for migration guidance with eligibility scoring, ranked visa recommendations, dynamic document checklists, and AI chat. Built with React + Vite and Node.js/Express, with JWT auth, rate limiting, MongoDB + Supabase persistence, PDF export, and resilient multi-LLM fallback (OpenAI/Gemini/Ollama).",
+    tech: ["React", "Vite", "Node.js", "Express", "JWT", "MongoDB", "Supabase", "OpenAI", "Gemini", "Ollama"],
     github: "https://github.com",
     demo: null,
   },
   {
-    title: "Task Tracker",
+    title: "Mango Paradise | Full-Stack E-commerce & Admin Analytics Platform",
     summary:
-      "A productivity app for managing daily tasks with filtering, status tracking, and persistent local storage.",
-    tech: ["React", "TypeScript", "LocalStorage", "CSS"],
-    github: "https://github.com",
-    demo: null,
-  },
-  {
-    title: "Weather Dashboard",
-    summary:
-      "A weather dashboard that fetches real-time forecast data from public APIs with a clean, responsive UI.",
-    tech: ["JavaScript", "REST APIs", "HTML", "CSS"],
+      "A production-ready mango pre-order platform built with Next.js, React, TypeScript, and PostgreSQL. Includes apartment-based ordering, delivery scheduling, tracking, UPI upload + Razorpay verification, and backend APIs for order lifecycle, payment validation, admin auth, and CSV exports. Also includes an admin dashboard with real-time monitoring and demand forecasting insights.",
+    tech: ["Next.js", "React", "TypeScript", "PostgreSQL", "SWR", "Razorpay", "Node.js APIs", "Analytics Dashboards"],
     github: "https://github.com",
     demo: null,
   },
@@ -146,7 +138,7 @@ export function ProjectsSection() {
           </div>
         </FadeIn>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {personalProjects.map((project, idx) => (
             <FadeIn key={project.title} delay={idx * 150} className="flex">
               <div className="group relative bg-card border rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1">

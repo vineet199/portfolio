@@ -1,30 +1,42 @@
 import { FadeIn } from "@/components/FadeIn";
-import { Brain, Layout, Server, Database } from "lucide-react";
+import { Brain, Layout, Server, Cloud, Database, ShieldCheck } from "lucide-react";
 
 const skillCategories = [
   {
     title: "AI / ML",
     icon: <Brain className="w-6 h-6 text-primary mb-4" />,
-    description: "Building LLM-powered tools, RAG pipelines, and AI agents for developer workflows.",
+    description: "Building LLM-powered tools, RAG pipelines for developer workflows.",
     skills: ["LLM APIs (OpenAI, Claude)", "RAG Pipelines", "Prompt Engineering", "AI Agent Design", "LangChain"]
   },
   {
     title: "Frontend",
     icon: <Layout className="w-6 h-6 text-primary mb-4" />,
     description: "Crafting performant, accessible interfaces that scale to millions of users.",
-    skills: ["React", "Preact", "TypeScript", "Next.js", "Redux", "Angular", "Playwright", "Jest"]
+    skills: ["React", "Preact", "TS/JS", "Next.js", "Redux", "Angular"]
   },
   {
-    title: "Backend & Cloud",
+    title: "Backend",
     icon: <Server className="w-6 h-6 text-primary mb-4" />,
-    description: "Designing microservices and cloud infrastructure for enterprise-scale platforms.",
-    skills: ["Node.js", "Java", "Kotlin", "Python", "AWS", "OCI", "Kubernetes", "Docker", "Kafka", "Terraform", "Argo CD"]
+    description: "Designing resilient APIs and services for enterprise-scale platforms.",
+    skills: ["Node.js", "Java", "Kotlin", "Python", "REST APIs", "Microservices", "Kafka"]
+  },
+  {
+    title: "Cloud",
+    icon: <Cloud className="w-6 h-6 text-primary mb-4" />,
+    description: "Building and operating cloud infrastructure.",
+    skills: ["AWS", "OCI", "Kubernetes", "Docker", "Terraform", "Argo CD", "Jenkins"]
   },
   {
     title: "Databases",
     icon: <Database className="w-6 h-6 text-primary mb-4" />,
     description: "Working with distributed and relational databases at production scale.",
     skills: ["PostgreSQL", "Cassandra", "Amazon Neptune", "MongoDB", "Redis"]
+  },
+  {
+    title: "Quality & Testing",
+    icon: <ShieldCheck className="w-6 h-6 text-primary mb-4" />,
+    description: "Driving reliable releases with robust test strategy, automation, and quality gates.",
+    skills: ["Playwright", "Jest", "Postman", "Jira", "CI Validation"]
   }
 ];
 
@@ -39,7 +51,7 @@ export function SkillsSection() {
           </div>
         </FadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {skillCategories.map((category, idx) => (
             <FadeIn key={category.title} delay={idx * 120} className="h-full">
               <div className="bg-card border rounded-2xl p-7 h-full shadow-sm hover:shadow-md transition-shadow duration-300">

@@ -83,7 +83,7 @@ export function AboutSection() {
             <FadeIn delay={200}>
               <div className="prose prose-lg dark:prose-invert text-muted-foreground space-y-4">
                 <p>
-                  I'm a staff-level engineer with 7 years of experience driving technical direction at <strong className="text-foreground">Oracle Cloud Infrastructure</strong> and <strong className="text-foreground">Cisco Systems</strong>. I specialise in building AI-powered developer tooling, large-scale frontend platforms, and cloud infrastructure that teams rely on at enterprise scale.
+                  I'm a staff-level engineer with 7+ years of experience driving technical direction at <strong className="text-foreground">Oracle Cloud Infrastructure</strong> and <strong className="text-foreground">Cisco Systems</strong>. I specialise in building AI-powered developer tooling, large-scale frontend platforms, and cloud infrastructure that teams rely on at enterprise scale.
                 </p>
                 <p>
                   At Oracle, I've authored canonical testing frameworks adopted across 50+ OCI service teams and designed an AI agent that auto-generates production-ready components — cutting build time by an estimated 60–70%. At Cisco, I architected "Smart Workspaces", a location analytics platform that became the flagship product and drove a ~50% increase in revenue.

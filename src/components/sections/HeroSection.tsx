@@ -58,7 +58,7 @@ export function HeroSection() {
         
         <FadeIn delay={300}>
           <p className="mt-6 text-xl md:text-2xl text-muted-foreground max-w-2xl leading-relaxed">
-            7 years shipping AI-powered developer tooling and large-scale cloud platforms at Oracle and Cisco — setting engineering standards that scale across 50+ teams.
+            7+ years shipping AI-powered developer tooling and large-scale cloud platforms at Oracle and Cisco — setting engineering standards that scale across 50+ teams.
           </p>
         </FadeIn>
         
