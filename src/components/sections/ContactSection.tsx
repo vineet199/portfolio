@@ -31,11 +31,11 @@ export function ContactSection() {
 
             <div className="flex flex-wrap justify-center gap-6 mt-8">
               <a
-                href="mailto:vineetsk99@gmail.com"
+                href="mailto:vineetkamath1997@gmail.com"
                 className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-medium"
               >
                 <Mail size={18} />
-                vineetsk99@gmail.com
+                vineetkamath1997@gmail.com
               </a>
               <a
                 href="tel:+916360381491"

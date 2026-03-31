@@ -12,13 +12,13 @@ export function Footer() {
         </div>
         
         <div className="flex items-center gap-4">
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-background border text-muted-foreground hover:text-primary hover:border-primary transition-colors" aria-label="GitHub">
+          <a href="https://github.com/repos" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-background border text-muted-foreground hover:text-primary hover:border-primary transition-colors" aria-label="GitHub">
             <FolderGit2 size={20} />
           </a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-background border text-muted-foreground hover:text-primary hover:border-primary transition-colors" aria-label="LinkedIn">
+          <a href="https://www.linkedin.com/in/vineet-kamath-59344b12b/" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-background border text-muted-foreground hover:text-primary hover:border-primary transition-colors" aria-label="LinkedIn">
             <Link2 size={20} />
           </a>
-          <a href="mailto:vineetsk99@gmail.com" className="p-2 rounded-full bg-background border text-muted-foreground hover:text-primary hover:border-primary transition-colors" aria-label="Email">
+          <a href="mailto:vineetkamath1997@gmail.com" className="p-2 rounded-full bg-background border text-muted-foreground hover:text-primary hover:border-primary transition-colors" aria-label="Email">
             <Mail size={20} />
           </a>
         </div>

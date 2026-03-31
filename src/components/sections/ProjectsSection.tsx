@@ -5,7 +5,7 @@ type Project = {
   title: string;
   summary: string;
   tech: string[];
-  github: string;
+  github: string | null;
   demo: string | null;
   featured?: boolean;
 };
@@ -15,7 +15,7 @@ const projects = [
     title: "Smart Workspaces",
     summary: "Location analytics platform built at Cisco Spaces that became the flagship product. Delivers spatial heatmap data and daily utilisation tracking from Cassandra and Amazon Neptune — contributing to $1B in subscription sales growth.",
     tech: ["React", "Redux", "Java", "Kotlin", "Cassandra", "Amazon Neptune", "AWS"],
-    github: "https://github.com",
+    github: null,
     demo: null,
     featured: true
   },
@@ -23,7 +23,7 @@ const projects = [
     title: "OCI AI Component Generator",
     summary: "An AI agent built at Oracle that parses UI specification documents and auto-generates production-ready, config-driven components using Oracle's Redwood/MAUI design system — reducing component build time by an estimated 60–70%.",
     tech: ["LLM APIs", "AI Agent Design", "Preact", "TypeScript", "OCI Console"],
-    github: "https://github.com",
+    github: null,
     demo: null,
     featured: true
   },
@@ -31,7 +31,7 @@ const projects = [
     title: "OCI Alloy Cloud Configurator",
     summary: "A white-label cloud configurator for OCI Alloy — a foundational piece of Oracle's global sovereign cloud strategy — enabling 10+ initial deployments and architected to scale across 50+ partner cloud environments.",
     tech: ["Preact", "TypeScript", "OCI", "Kubernetes", "Terraform"],
-    github: "https://github.com",
+    github: null,
     demo: null,
     featured: true
   }
@@ -43,7 +43,7 @@ const personalProjects = [
     summary:
       "A full-stack platform for migration guidance with eligibility scoring, ranked visa recommendations, dynamic document checklists, and AI chat. Built with React + Vite and Node.js/Express, with JWT auth, rate limiting, MongoDB + Supabase persistence, PDF export, and resilient multi-LLM fallback (OpenAI/Gemini/Ollama).",
     tech: ["React", "Vite", "Node.js", "Express", "JWT", "MongoDB", "Supabase", "OpenAI", "Gemini", "Ollama"],
-    github: "https://github.com",
+    github: "https://github.com/vineet199/clear-visa",
     demo: null,
   },
   {
@@ -51,7 +51,7 @@ const personalProjects = [
     summary:
       "A production-ready mango pre-order platform built with Next.js, React, TypeScript, and PostgreSQL. Includes apartment-based ordering, delivery scheduling, tracking, UPI upload + Razorpay verification, and backend APIs for order lifecycle, payment validation, admin auth, and CSV exports. Also includes an admin dashboard with real-time monitoring and demand forecasting insights.",
     tech: ["Next.js", "React", "TypeScript", "PostgreSQL", "SWR", "Razorpay", "Node.js APIs", "Analytics Dashboards"],
-    github: "https://github.com",
+    github: "https://github.com/vineet199/Mango-paradise",
     demo: null,
   },
 ] satisfies Project[];
@@ -83,15 +83,17 @@ export function ProjectsSection() {
                       <Folder size={24} />
                     </div>
                     <div className="flex gap-3">
-                      <a 
-                        href={project.github} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-foreground transition-colors"
-                        aria-label={`GitHub repository for ${project.title}`}
-                      >
-                        <FolderGit2 size={20} />
-                      </a>
+                      {project.github && (
+                        <a 
+                          href={project.github} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-foreground transition-colors"
+                          aria-label={`GitHub repository for ${project.title}`}
+                        >
+                          <FolderGit2 size={20} />
+                        </a>
+                      )}
                       {project.demo && (
                         <a 
                           href={project.demo} 
