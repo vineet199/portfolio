@@ -1,6 +1,7 @@
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Home from "@/pages/Home";
+import Freelance from "@/pages/Freelance";
 
 // We keep a simple router setup even for a single page app 
 // to maintain standard structure and allow future expansion
@@ -10,6 +11,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/freelance" component={Freelance} />
       <Route>
         <div className="min-h-screen flex items-center justify-center bg-background text-foreground flex-col gap-4">
           <h1 className="text-4xl font-display font-bold">404</h1>

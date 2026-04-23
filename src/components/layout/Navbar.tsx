@@ -22,6 +22,7 @@ export function Navbar() {
       setIsScrolled(window.scrollY > 20);
 
       const sections = navLinks
+        .filter((link) => link.href.startsWith("#"))
         .map((link) => document.querySelector(link.href) as HTMLElement | null)
         .filter(Boolean) as HTMLElement[];
 
@@ -34,7 +35,12 @@ export function Navbar() {
         }
       }
 
-      setActiveSection(current);
+      // route-based active state (e.g. /freelance)
+      if (window.location.pathname === "/freelance") {
+        setActiveSection("/freelance");
+      } else {
+        setActiveSection(current);
+      }
     };
 
     handleScroll();
@@ -45,6 +51,11 @@ export function Navbar() {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setMobileMenuOpen(false);
+    if (href.startsWith("/")) {
+      // navigate to a different route
+      window.location.href = href;
+      return;
+    }
     const element = document.querySelector(href);
     if (element) {
       const offsetTop = element.getBoundingClientRect().top + window.scrollY - 100;
