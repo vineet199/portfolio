@@ -1,35 +1,123 @@
 import { useEffect, useState } from "react";
 import { Footer } from "@/components/layout/Footer";
-import { useTheme } from "@/hooks/use-theme";
-import { Sun, Moon, Menu, X } from "lucide-react";
+import { Navbar } from "@/components/layout/Navbar";
 import { FadeIn } from "@/components/FadeIn";
+import {
+  StatsSection,
+  TrustedBySection,
+  TechStackSection,
+  EngagementSection,
+  TestimonialsSection,
+  FAQSection,
+} from "@/components/sections/FreelanceSections";
+import {
+  ArrowRight,
+  Globe,
+  Smartphone,
+  Server,
+  Search,
+  Hammer,
+  PackageCheck,
+  ChevronDown,
+  Folder,
+  FolderGit2,
+  ExternalLink,
+  Calendar,
+  FileText,
+  Sparkles,
+} from "lucide-react";
+
+/* ─── DATA ─── */
+
+const services = [
+  {
+    icon: <Globe className="w-6 h-6" />,
+    title: "Web Applications",
+    description:
+      "Production-grade React / Next / Vite apps with SSR, accessibility, and performance optimization baked in.",
+    tech: ["React", "Next.js", "Vite", "TypeScript"],
+  },
+  {
+    icon: <Smartphone className="w-6 h-6" />,
+    title: "Mobile Applications",
+    description:
+      "Cross-platform React Native / Expo apps with native integrations for iOS & Android.",
+    tech: ["React Native", "Expo", "iOS", "Android"],
+  },
+  {
+    icon: <Server className="w-6 h-6" />,
+    title: "Scalable Backends",
+    description:
+      "Well-architected APIs, serverless and containerized platforms, and CI/CD pipelines.",
+    tech: ["Node.js", "Java", "Kotlin", "AWS", "Docker"],
+  },
+];
+
+const processSteps = [
+  {
+    icon: <Search className="w-5 h-5" />,
+    step: "01",
+    title: "Discovery",
+    description:
+      "Clarify goals, timeline and success metrics. I ask the right questions so nothing gets lost in translation.",
+  },
+  {
+    icon: <Hammer className="w-5 h-5" />,
+    step: "02",
+    title: "Build",
+    description:
+      "Deliver working increments with demos and feedback loops. You see real progress every week.",
+  },
+  {
+    icon: <PackageCheck className="w-5 h-5" />,
+    step: "03",
+    title: "Handoff",
+    description:
+      "Documentation, knowledge transfer and ongoing support options. You own everything.",
+  },
+];
+
+const caseStudies = [
+  {
+    title: "SaaS Platform",
+    problem: "Enterprise client needed a multi-tenant platform with complex RBAC and billing.",
+    approach: "Architected a modular React + Node.js app with row-level security and Stripe integration.",
+    result: "Shipped in 8 weeks. Onboarded 50+ enterprise customers in the first quarter.",
+    tech: ["React", "Node.js", "PostgreSQL", "Stripe"],
+    github: "https://github.com/your-username/saas-platform",      // ← update this
+    demo: "https://saas-platform-demo.vercel.app",                  // ← update this
+  },
+  {
+    title: "Consumer Mobile App",
+    problem: "Startup needed a cross-platform app with offline-first sync and push notifications.",
+    approach: "Built with React Native + Expo, using local SQLite for offline and Firebase for realtime sync.",
+    result: "Launched on both App Store & Play Store. 10K+ downloads in the first month.",
+    tech: ["React Native", "Expo", "Firebase", "Redux"],
+    github: "https://github.com/your-username/consumer-mobile-app", // ← update this
+    demo: "https://consumer-app-demo.vercel.app",                   // ← update this
+  },
+  {
+    title: "Performance & Scalability",
+    problem: "Backend bottlenecks causing 5s+ response times under load.",
+    approach: "Profiled hotspots, added Redis caching, migrated to Kubernetes with auto-scaling.",
+    result: "Reduced p95 latency by 40%. Scaled from 1K to 100K+ concurrent users.",
+    tech: ["AWS", "Kubernetes", "Redis", "Load Testing"],
+    github: "https://github.com/your-username/perf-scalability",    // ← update this
+    demo: "https://perf-demo.vercel.app",                           // ← update this
+  },
+];
+
+/* ─── COMPONENT ─── */
 
 export default function Freelance() {
   const calendlyUrl = "https://calendly.com/your-calendar";
-
-  const tabs = [
-    { name: "Overview", id: "freelance-hero" },
-    { name: "Services", id: "freelance-services" },
-    { name: "Process", id: "freelance-process" },
-    { name: "Projects", id: "freelance-featured" },
-    { name: "Contact", id: "freelance-contact" },
-  ];
-
-  const [activeTab, setActiveTab] = useState(tabs[0].name);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const { theme, toggleTheme } = useTheme();
-
-  const scrollToSection = (id: string) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  const [cursor, setCursor] = useState({ x: 50, y: 50 });
 
   useEffect(() => {
     document.title = "Freelance — Vineet Kamath";
-    const desc = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
+    const desc = document.querySelector(
+      'meta[name="description"]'
+    ) as HTMLMetaElement | null;
     if (desc) {
       desc.setAttribute(
         "content",
@@ -45,230 +133,343 @@ export default function Freelance() {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = tabs
-        .map((t) => document.getElementById(t.id))
-        .filter(Boolean) as HTMLElement[];
-
-      const scrollPos = window.scrollY + 140;
-      let current = tabs[0].name;
-
-      for (const section of sections) {
-        if (scrollPos >= section.offsetTop) {
-          const tab = tabs.find((t) => t.id === section.id);
-          if (tab) current = tab.name;
-        }
-      }
-
-      setActiveTab(current);
+    const handleMouseMove = (e: MouseEvent) => {
+      setCursor({
+        x: (e.clientX / window.innerWidth) * 100,
+        y: (e.clientY / window.innerHeight) * 100,
+      });
     };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col selection:bg-primary/30 selection:text-foreground">
-      <header className="bg-background border-b border-border">
-        <div className="max-w-6xl mx-auto px-6 md:px-12 flex items-center justify-between py-4">
-          <a
-            href="/"
-            className="text-2xl font-display font-bold tracking-tighter text-foreground group"
-          >
-            <span className="text-primary transition-colors">V</span>
-            <span className="group-hover:text-primary transition-colors">K.</span>
-          </a>
-          <nav className="hidden md:flex items-center gap-4">
-            {tabs.map((tab) => (
-              <button
-                key={tab.name}
-                onClick={() => {
-                  setActiveTab(tab.name);
-                  scrollToSection(tab.id);
-                }}
-                className={`relative text-sm font-medium px-3 py-1 transition-colors ${
-                  activeTab === tab.name
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {tab.name}
-                <span
-                  className={`absolute left-0 -bottom-1 h-0.5 rounded-full bg-primary transition-all duration-300 ease-out ${
-                    activeTab === tab.name ? "w-full opacity-100" : "w-0 opacity-0"
-                  }`}
-                />
-              </button>
-            ))}
-
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
-              aria-label="Toggle Theme"
-            >
-              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-          </nav>
-
-          <div className="flex items-center gap-4 md:hidden">
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
-              aria-label="Toggle Theme"
-            >
-              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-foreground"
-              aria-label="Toggle Menu"
-            >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-
-          {mobileMenuOpen && (
-            <div className="absolute top-full left-0 w-full bg-background border-b shadow-lg py-4 px-6 md:hidden">
-              {tabs.map((tab) => (
-                <a
-                  key={tab.name}
-                  href={"#" + tab.id}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setMobileMenuOpen(false);
-                    setActiveTab(tab.name);
-                    scrollToSection(tab.id);
-                  }}
-                  className="text-lg font-medium text-muted-foreground hover:text-foreground py-2 border-b border-border/50 last:border-0"
-                >
-                  {tab.name}
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
-      </header>
+      <Navbar />
 
       <main className="flex-grow">
-        <section id="freelance-hero" className="relative min-h-[60vh] flex flex-col justify-center pt-24">
-          <div className="max-w-4xl mx-auto px-6 md:px-12 w-full text-center">
+        {/* ─── HERO ─── */}
+        <section
+          id="freelance-hero"
+          className="relative min-h-[100svh] flex flex-col justify-center pt-20 overflow-hidden hero-intro"
+        >
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] opacity-50 pointer-events-none -z-10" />
+          <div
+            className="absolute w-[380px] h-[380px] rounded-full bg-primary/10 blur-3xl pointer-events-none -z-10 transition-transform duration-700 ease-out"
+            style={{
+              left: `${cursor.x}%`,
+              top: `${cursor.y}%`,
+              transform: "translate(-50%, -50%)",
+            }}
+          />
+
+          <div className="max-w-6xl mx-auto px-6 md:px-12 w-full">
             <FadeIn delay={100}>
-              <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-secondary border border-border text-sm font-medium text-muted-foreground">
+              <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary border border-border text-sm font-medium text-muted-foreground">
+                <Sparkles size={14} className="text-primary" />
                 Available for freelance engagements
               </div>
             </FadeIn>
 
             <FadeIn delay={200}>
-              <h1 className="text-4xl md:text-6xl font-display font-bold tracking-tight text-foreground leading-tight">
-                Freelance engineering — Web & App development
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tight text-foreground max-w-4xl leading-[1.1]">
+                Let's build{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6F4E37] via-[#8B5E3C] to-[#A47148]">
+                  something great
+                </span>{" "}
+                together.
               </h1>
             </FadeIn>
 
             <FadeIn delay={300}>
-              <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                I help startups and product teams build production-ready web and mobile applications, and scalable backend systems. Short engagements, focused outcomes.
+              <p className="mt-6 text-xl md:text-2xl text-muted-foreground max-w-2xl leading-relaxed">
+                I help startups and product teams build production-ready web and
+                mobile applications, and scalable backend systems. Short
+                engagements, focused outcomes.
               </p>
             </FadeIn>
 
             <FadeIn delay={400}>
-              <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <a
                   href={calendlyUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="group inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-medium rounded-xl hover:bg-primary/90 shadow transition"
+                  className="group flex items-center justify-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-medium rounded-xl hover:bg-primary/90 hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-primary/20 transition-all duration-200 w-full sm:w-auto"
                 >
+                  <Calendar size={18} />
                   Schedule a call
+                  <ArrowRight
+                    size={18}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
                 </a>
-
                 <a
                   href="/Vineet_Kamath_Resume.pdf"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-background text-foreground border-2 border-border font-medium rounded-xl hover:border-primary/50 transition"
+                  className="flex items-center justify-center gap-2 px-8 py-4 bg-background text-foreground border-2 border-border font-medium rounded-xl hover:border-primary/50 hover:bg-secondary transition-all duration-200 w-full sm:w-auto"
                 >
+                  <FileText size={18} />
                   View resume
                 </a>
               </div>
             </FadeIn>
           </div>
-        </section>
 
-        <section id="freelance-services" className="pt-20 pb-12">
-          <div className="max-w-6xl mx-auto px-6 md:px-12">
-            <h2 className="text-2xl font-semibold mb-6">What I offer</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="p-6 bg-secondary rounded-xl border border-border">
-                <h3 className="font-medium text-lg mb-2">Web Applications</h3>
-                <p className="text-sm text-muted-foreground">Production-grade React/Next/Vite apps, SSR/CSR, accessibility and performance optimization.</p>
-              </div>
-
-              <div className="p-6 bg-secondary rounded-xl border border-border">
-                <h3 className="font-medium text-lg mb-2">Mobile Applications</h3>
-                <p className="text-sm text-muted-foreground">Cross-platform React Native / Expo apps and native integrations for iOS & Android.</p>
-              </div>
-
-              <div className="p-6 bg-secondary rounded-xl border border-border">
-                <h3 className="font-medium text-lg mb-2">Scalable Backends</h3>
-                <p className="text-sm text-muted-foreground">Well-architected APIs, serverless and containerized platforms, and CI/CD pipelines.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="freelance-process" className="pt-12 pb-12">
-          <div className="max-w-4xl mx-auto px-6 md:px-12">
-            <h2 className="text-2xl font-semibold mb-6">How I work</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="p-6 bg-secondary rounded-xl border border-border text-center">
-                <h4 className="font-semibold mb-2">1. Discovery</h4>
-                <p className="text-sm text-muted-foreground">Clarify goals, timeline and success metrics.</p>
-              </div>
-              <div className="p-6 bg-secondary rounded-xl border border-border text-center">
-                <h4 className="font-semibold mb-2">2. Build</h4>
-                <p className="text-sm text-muted-foreground">Deliver working increments, with demos and feedback loops.</p>
-              </div>
-              <div className="p-6 bg-secondary rounded-xl border border-border text-center">
-                <h4 className="font-semibold mb-2">3. Handoff</h4>
-                <p className="text-sm text-muted-foreground">Documentation, knowledge transfer and support options.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="freelance-featured" className="pt-12 pb-20">
-          <div className="max-w-6xl mx-auto px-6 md:px-12">
-            <h2 className="text-2xl font-semibold mb-6">Selected projects</h2>
-            <p className="text-sm text-muted-foreground mb-6">A shortlist of work relevant to freelancing engagements.</p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="p-6 bg-secondary rounded-xl border border-border">
-                <h3 className="font-medium mb-1">SaaS platform</h3>
-                <p className="text-sm text-muted-foreground">Led development of a multi-tenant SaaS used by enterprise customers.</p>
-              </div>
-              <div className="p-6 bg-secondary rounded-xl border border-border">
-                <h3 className="font-medium mb-1">Consumer mobile app</h3>
-                <p className="text-sm text-muted-foreground">Built a cross-platform mobile app with offline sync and native integrations.</p>
-              </div>
-              <div className="p-6 bg-secondary rounded-xl border border-border">
-                <h3 className="font-medium mb-1">Performance & scalability</h3>
-                <p className="text-sm text-muted-foreground">Improved app performance and scaled backend systems to handle growth.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="freelance-contact" className="pt-12 pb-24">
-          <div className="max-w-4xl mx-auto px-6 md:px-12 text-center">
-            <h2 className="text-2xl font-semibold mb-4">Ready to work together?</h2>
-            <p className="text-sm text-muted-foreground mb-6">Book a short intro call to discuss scope and next steps.</p>
-            <a
-              href={calendlyUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-medium rounded-xl hover:bg-primary/90 transition"
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce hidden md:block">
+            <button
+              onClick={() => scrollToSection("freelance-services")}
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="Scroll down"
             >
-              Schedule on Calendly
-            </a>
+              <ChevronDown size={24} />
+            </button>
+          </div>
+        </section>
+
+        {/* ─── STATS ─── */}
+        <StatsSection />
+
+        {/* ─── TRUSTED BY ─── */}
+        <TrustedBySection />
+
+        {/* ─── SERVICES ─── */}
+        <section id="freelance-services" className="py-24 md:py-32">
+          <div className="max-w-6xl mx-auto px-6 md:px-12">
+            <FadeIn>
+              <div className="flex items-center gap-4 mb-12">
+                <div>
+                  <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-2">
+                    01. Services
+                  </h2>
+                  <h3 className="text-3xl md:text-4xl font-display font-bold">
+                    What I offer
+                  </h3>
+                </div>
+                <div className="h-px bg-border flex-grow ml-8 hidden md:block" />
+              </div>
+            </FadeIn>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {services.map((service, idx) => (
+                <FadeIn key={service.title} delay={idx * 150} className="flex">
+                  <div className="group relative bg-card border rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1">
+                    <div className="absolute -inset-x-4 -top-24 -bottom-4 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                    <div className="relative z-10">
+                      <div className="p-3 bg-secondary rounded-xl text-primary mb-6 w-fit transition-transform duration-500 group-hover:rotate-3 group-hover:scale-105">
+                        {service.icon}
+                      </div>
+                      <h4 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">
+                        {service.title}
+                      </h4>
+                      <p className="text-muted-foreground mb-8 leading-relaxed">
+                        {service.description}
+                      </p>
+                    </div>
+                    <div className="relative z-10 mt-auto">
+                      <ul className="flex flex-wrap gap-2 text-sm font-mono text-muted-foreground/80">
+                        {service.tech.map((t) => (
+                          <li
+                            key={t}
+                            className="bg-background border px-2 py-0.5 rounded transition-colors duration-300 group-hover:bg-secondary/70"
+                          >
+                            {t}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ─── TECH STACK ─── */}
+        <TechStackSection />
+
+        {/* ─── PROCESS ─── */}
+        <section id="freelance-process" className="py-24 md:py-32">
+          <div className="max-w-4xl mx-auto px-6 md:px-12">
+            <FadeIn>
+              <div className="text-center max-w-2xl mx-auto mb-16">
+                <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-3">
+                  02. Process
+                </h2>
+                <h3 className="text-3xl md:text-4xl font-display font-bold">
+                  How I work
+                </h3>
+              </div>
+            </FadeIn>
+
+            <div className="relative">
+              <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border hidden md:block" />
+              <div className="space-y-12">
+                {processSteps.map((step, idx) => (
+                  <FadeIn key={step.step} delay={idx * 150}>
+                    <div className="relative pl-0 md:pl-16 group">
+                      <div className="hidden md:flex absolute left-0 top-1 h-12 w-12 rounded-full border-2 border-primary bg-background items-center justify-center group-hover:scale-110 group-hover:bg-primary transition-all duration-300 z-10">
+                        <span className="text-primary group-hover:text-primary-foreground font-mono text-sm font-bold transition-colors duration-300">
+                          {step.step}
+                        </span>
+                      </div>
+                      <div className="bg-card border rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="p-2 bg-primary/10 rounded-lg text-primary">
+                            {step.icon}
+                          </div>
+                          <h4 className="text-xl font-bold group-hover:text-primary transition-colors duration-300">
+                            {step.title}
+                          </h4>
+                        </div>
+                        <p className="text-muted-foreground leading-relaxed">
+                          {step.description}
+                        </p>
+                      </div>
+                    </div>
+                  </FadeIn>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ─── ENGAGEMENT TYPES ─── */}
+        <EngagementSection />
+
+        {/* ─── CASE STUDIES ─── */}
+        <section id="freelance-featured" className="py-24 md:py-32 bg-secondary/30 border-y">
+          <div className="max-w-6xl mx-auto px-6 md:px-12">
+            <FadeIn>
+              <div className="flex items-center gap-4 mb-12">
+                <div>
+                  <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-2">
+                    06. Case Studies
+                  </h2>
+                  <h3 className="text-3xl md:text-4xl font-display font-bold">
+                    Real results, real projects
+                  </h3>
+                  <p className="text-muted-foreground mt-2">
+                    Problem → Approach → Result for each engagement.
+                  </p>
+                </div>
+                <div className="h-px bg-border flex-grow ml-8 hidden md:block" />
+              </div>
+            </FadeIn>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {caseStudies.map((project, idx) => (
+                <FadeIn key={project.title} delay={idx * 150} className="flex">
+                  <div className="group relative bg-card border rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1">
+                    <div className="absolute -inset-x-4 -top-24 -bottom-4 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                    <div className="relative z-10">
+                      <div className="flex justify-between items-start mb-6">
+                        <div className="p-3 bg-secondary rounded-xl text-primary transition-transform duration-500 group-hover:rotate-3 group-hover:scale-105">
+                          <Folder size={24} />
+                        </div>
+                        <div className="flex gap-3">
+                          {project.github && (
+                            <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors" aria-label={`GitHub for ${project.title}`}>
+                              <FolderGit2 size={20} />
+                            </a>
+                          )}
+                          {project.demo && (
+                            <a href={project.demo} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label={`Demo of ${project.title}`}>
+                              <ExternalLink size={20} />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+
+                      <h4 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
+                        {project.title}
+                      </h4>
+
+                      <div className="space-y-3 mb-6">
+                        <div>
+                          <span className="text-xs font-semibold text-primary uppercase tracking-wider">Problem</span>
+                          <p className="text-sm text-muted-foreground mt-1">{project.problem}</p>
+                        </div>
+                        <div>
+                          <span className="text-xs font-semibold text-primary uppercase tracking-wider">Approach</span>
+                          <p className="text-sm text-muted-foreground mt-1">{project.approach}</p>
+                        </div>
+                        <div>
+                          <span className="text-xs font-semibold text-primary uppercase tracking-wider">Result</span>
+                          <p className="text-sm text-foreground font-medium mt-1">{project.result}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="relative z-10 mt-auto">
+                      <ul className="flex flex-wrap gap-2 text-sm font-mono text-muted-foreground/80">
+                        {project.tech.map((t) => (
+                          <li key={t} className="bg-background border px-2 py-0.5 rounded transition-colors duration-300 group-hover:bg-secondary/70">
+                            {t}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ─── TESTIMONIALS ─── */}
+        <TestimonialsSection />
+
+        {/* ─── FAQ ─── */}
+        <FAQSection />
+
+        {/* ─── CTA ─── */}
+        <section id="freelance-contact" className="py-24 md:py-32 bg-secondary/30 border-y">
+          <div className="max-w-4xl mx-auto px-6 md:px-12">
+            <FadeIn>
+              <div className="text-center">
+                <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-3">
+                  09. Let's Talk
+                </h2>
+                <h3 className="text-3xl md:text-5xl font-display font-bold mb-6">
+                  Ready to work together?
+                </h3>
+                <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed">
+                  Book a short intro call to discuss scope and next steps. No
+                  commitment — just a conversation to see if we're a good fit.
+                </p>
+
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <a
+                    href={calendlyUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group flex items-center justify-center gap-2 px-10 py-4 bg-primary text-primary-foreground font-medium rounded-xl hover:bg-primary/90 hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-primary/20 transition-all duration-200 w-full sm:w-auto text-lg"
+                  >
+                    <Calendar size={20} />
+                    Schedule on Calendly
+                    <ArrowRight
+                      size={20}
+                      className="group-hover:translate-x-1 transition-transform"
+                    />
+                  </a>
+                  <a
+                    href="mailto:vineetkamath199@gmail.com"
+                    className="flex items-center justify-center gap-2 px-10 py-4 bg-background text-foreground border-2 border-border font-medium rounded-xl hover:border-primary/50 hover:bg-secondary transition-all duration-200 w-full sm:w-auto text-lg"
+                  >
+                    Or send an email
+                  </a>
+                </div>
+              </div>
+            </FadeIn>
           </div>
         </section>
       </main>
