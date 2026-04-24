@@ -89,7 +89,7 @@ const caseStudies = [
     tech: ["React", "Vite", "TypeScript", "Tailwind CSS"],
     github: null as string | null, // Private repo
     demo: "https://www.kams-gifts.in/",
-    demoVideoUrl: "/assets/videos/kams_demo.webp",
+    demoVideoUrl: `${import.meta.env.BASE_URL}assets/videos/kams_demo.webp`,
   },
   {
     title: "Mango Pre-Order Platform",
@@ -99,7 +99,7 @@ const caseStudies = [
     tech: ["React", "Next.js", "Tailwind CSS", "Vercel"],
     github: null as string | null, // Private repo
     demo: "https://mango-paradise.vercel.app/",
-    demoVideoUrl: "/assets/videos/mango_demo.webp",
+    demoVideoUrl: `${import.meta.env.BASE_URL}assets/videos/mango_demo.webp`,
   },
   {
     title: "A S Legal Works",
@@ -109,7 +109,7 @@ const caseStudies = [
     tech: ["Web Design", "CMS Integration", "SEO", "Responsive UI"],
     github: null as string | null, // No public repo
     demo: "https://www.aslegalworks.com/",
-    demoVideoUrl: "/assets/videos/aslegal_demo.webp",
+    demoVideoUrl: `${import.meta.env.BASE_URL}assets/videos/aslegal_demo.webp`,
   },
 ];
 
