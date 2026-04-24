@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "wouter";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { FadeIn } from "@/components/FadeIn";
@@ -443,7 +444,7 @@ export default function Freelance() {
 
               {/* Main Site Link Card */}
               <FadeIn delay={150 * 3} className="flex">
-                <a href="/" className="group relative bg-primary/5 border border-primary/20 rounded-2xl p-8 flex flex-col justify-center items-center text-center overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1">
+                <Link href="/" className="group relative bg-primary/5 border border-primary/20 rounded-2xl p-8 flex flex-col justify-center items-center text-center overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1">
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
                   <div className="relative z-10">
@@ -457,7 +458,7 @@ export default function Freelance() {
                       Looking for my complete work history, open-source contributions, and more detailed projects?
                     </p>
                   </div>
-                </a>
+                </Link>
               </FadeIn>
             </div>
           </div>
