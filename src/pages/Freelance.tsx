@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { FadeIn } from "@/components/FadeIn";
@@ -25,6 +26,8 @@ import {
   Calendar,
   FileText,
   Sparkles,
+  PlayCircle,
+  X,
 } from "lucide-react";
 
 /* ─── DATA ─── */
@@ -86,6 +89,7 @@ const caseStudies = [
     tech: ["React", "Vite", "TypeScript", "Tailwind CSS"],
     github: null as string | null, // Private repo
     demo: "https://www.kams-gifts.in/",
+    demoVideoUrl: "/assets/videos/kams_demo.webp",
   },
   {
     title: "Mango Pre-Order Platform",
@@ -95,6 +99,7 @@ const caseStudies = [
     tech: ["React", "Next.js", "Tailwind CSS", "Vercel"],
     github: null as string | null, // Private repo
     demo: "https://mango-paradise.vercel.app/",
+    demoVideoUrl: "/assets/videos/mango_demo.webp",
   },
   {
     title: "A S Legal Works",
@@ -104,6 +109,7 @@ const caseStudies = [
     tech: ["Web Design", "CMS Integration", "SEO", "Responsive UI"],
     github: null as string | null, // No public repo
     demo: "https://www.aslegalworks.com/",
+    demoVideoUrl: "/assets/videos/aslegal_demo.webp",
   },
 ];
 
@@ -112,6 +118,7 @@ const caseStudies = [
 export default function Freelance() {
   const calendlyUrl = "https://calendly.com/vineetkamath1997";
   const [cursor, setCursor] = useState({ x: 50, y: 50 });
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
 
   useEffect(() => {
     document.title = "Freelance — Vineet Kamath";
@@ -292,8 +299,7 @@ export default function Freelance() {
           </div>
         </section>
 
-        {/* ─── TECH STACK ─── */}
-        <TechStackSection />
+
 
         {/* ─── PROCESS ─── */}
         <section id="freelance-process" className="py-24 md:py-32">
@@ -341,6 +347,9 @@ export default function Freelance() {
           </div>
         </section>
 
+        {/* ─── TECH STACK ─── */}
+        <TechStackSection />
+
         {/* ─── ENGAGEMENT TYPES ─── */}
         <EngagementSection />
 
@@ -351,7 +360,7 @@ export default function Freelance() {
               <div className="flex items-center gap-4 mb-12">
                 <div>
                   <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-2">
-                    06. Case Studies
+                    05. Case Studies
                   </h2>
                   <h3 className="text-3xl md:text-4xl font-display font-bold">
                     Real results, real projects
@@ -369,6 +378,11 @@ export default function Freelance() {
                 <FadeIn key={project.title} delay={idx * 150} className="flex">
                   <div className="group relative bg-card border rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1">
                     <div className="absolute -inset-x-4 -top-24 -bottom-4 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                    
+                    {/* Approach A: Hover Thumbnail */}
+                    {project.demoVideoUrl && (
+                      <img src={project.demoVideoUrl} alt="Demo" className="absolute inset-x-0 top-0 h-48 w-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0" style={{ maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)' }} />
+                    )}
 
                     <div className="relative z-10">
                       <div className="flex justify-between items-start mb-6">
@@ -380,6 +394,11 @@ export default function Freelance() {
                             <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors" aria-label={`GitHub for ${project.title}`}>
                               <FolderGit2 size={20} />
                             </a>
+                          )}
+                          {project.demoVideoUrl && (
+                            <button onClick={() => setSelectedVideo(project.demoVideoUrl as string)} className="text-muted-foreground hover:text-primary transition-colors" aria-label={`Play Demo of ${project.title}`}>
+                              <PlayCircle size={20} />
+                            </button>
                           )}
                           {project.demo && (
                             <a href={project.demo} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label={`Demo of ${project.title}`}>
@@ -456,7 +475,7 @@ export default function Freelance() {
             <FadeIn>
               <div className="text-center">
                 <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-3">
-                  09. Let's Talk
+                  08. Let's Talk
                 </h2>
                 <h3 className="text-3xl md:text-5xl font-display font-bold mb-6">
                   Ready to work together?
@@ -494,6 +513,34 @@ export default function Freelance() {
       </main>
 
       <Footer />
+
+      <AnimatePresence>
+        {selectedVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm"
+            onClick={() => setSelectedVideo(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-5xl rounded-2xl overflow-hidden shadow-2xl border bg-card"
+            >
+              <button
+                onClick={() => setSelectedVideo(null)}
+                className="absolute top-4 right-4 z-10 p-2 bg-background/50 hover:bg-background/80 rounded-full text-foreground transition-colors"
+              >
+                <X size={20} />
+              </button>
+              <img src={selectedVideo} alt="Demo Video" className="w-full h-auto max-h-[85vh] object-contain" />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

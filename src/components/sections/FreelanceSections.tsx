@@ -144,7 +144,7 @@ export function TechStackSection() {
         <FadeIn>
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-3">
-              04. Tech Stack
+              03. Tech Stack
             </h2>
             <h3 className="text-3xl md:text-4xl font-display font-bold">
               Technologies I work with
@@ -216,7 +216,7 @@ export function EngagementSection() {
           <div className="flex items-center gap-4 mb-12">
             <div>
               <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-2">
-                05. Engagement
+                04. Engagement
               </h2>
               <h3 className="text-3xl md:text-4xl font-display font-bold">
                 How we can work together
@@ -298,7 +298,7 @@ export function TestimonialsSection() {
         <FadeIn>
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-3">
-              07. Testimonials
+              06. Testimonials
             </h2>
             <h3 className="text-3xl md:text-4xl font-display font-bold">
               What people say
@@ -373,7 +373,7 @@ export function FAQSection() {
         <FadeIn>
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-3">
-              08. FAQ
+              07. FAQ
             </h2>
             <h3 className="text-3xl md:text-4xl font-display font-bold">
               Common questions
