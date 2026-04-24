@@ -35,6 +35,9 @@ jobs:
         env:
           BASE_PATH: /portfolio/
 
+      - name: Fix SPA Routing for Direct URLs
+        run: cp dist/public/index.html dist/public/404.html
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
