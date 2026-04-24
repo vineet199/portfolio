@@ -79,38 +79,38 @@ const processSteps = [
 
 const caseStudies = [
   {
-    title: "SaaS Platform",
-    problem: "Enterprise client needed a multi-tenant platform with complex RBAC and billing.",
-    approach: "Architected a modular React + Node.js app with row-level security and Stripe integration.",
-    result: "Shipped in 8 weeks. Onboarded 50+ enterprise customers in the first quarter.",
-    tech: ["React", "Node.js", "PostgreSQL", "Stripe"],
-    github: "https://github.com/your-username/saas-platform",      // ← update this
-    demo: "https://saas-platform-demo.vercel.app",                  // ← update this
+    title: "Corporate Gifts Showcase",
+    problem: "A B2B corporate gifting company needed a fast, modern digital catalog to showcase their premium products to enterprise clients.",
+    approach: "Designed and built a highly responsive, image-heavy showcase platform using Vite, React, and modern CSS for smooth animations.",
+    result: "Delivered a performant, SEO-friendly catalog that reduced client onboarding time and improved product discovery.",
+    tech: ["React", "Vite", "TypeScript", "Tailwind CSS"],
+    github: null as string | null, // Private repo
+    demo: "https://www.kams-gifts.in/",
   },
   {
-    title: "Consumer Mobile App",
-    problem: "Startup needed a cross-platform app with offline-first sync and push notifications.",
-    approach: "Built with React Native + Expo, using local SQLite for offline and Firebase for realtime sync.",
-    result: "Launched on both App Store & Play Store. 10K+ downloads in the first month.",
-    tech: ["React Native", "Expo", "Firebase", "Redux"],
-    github: "https://github.com/your-username/consumer-mobile-app", // ← update this
-    demo: "https://consumer-app-demo.vercel.app",                   // ← update this
+    title: "Mango Pre-Order Platform",
+    problem: "A premium mango supplier needed a streamlined way to handle pre-orders, payments, and delivery tracking for apartment communities.",
+    approach: "Built an end-to-end e-commerce flow with custom UPI payment integration, receipt upload, and real-time order tracking.",
+    result: "Automated the entire ordering pipeline, eliminating manual WhatsApp tracking and scaling to handle hundreds of apartment deliveries.",
+    tech: ["React", "Next.js", "Tailwind CSS", "Vercel"],
+    github: null as string | null, // Private repo
+    demo: "https://mango-paradise.vercel.app/",
   },
   {
-    title: "Performance & Scalability",
-    problem: "Backend bottlenecks causing 5s+ response times under load.",
-    approach: "Profiled hotspots, added Redis caching, migrated to Kubernetes with auto-scaling.",
-    result: "Reduced p95 latency by 40%. Scaled from 1K to 100K+ concurrent users.",
-    tech: ["AWS", "Kubernetes", "Redis", "Load Testing"],
-    github: "https://github.com/your-username/perf-scalability",    // ← update this
-    demo: "https://perf-demo.vercel.app",                           // ← update this
+    title: "A S Legal Works",
+    problem: "A seasoned legal professional with 25+ years of experience needed a trusted digital presence to highlight practice areas and capture client inquiries.",
+    approach: "Designed and launched a professional, accessible, and mobile-friendly firm website focused on establishing authority and streamlining contact.",
+    result: "Created a centralized hub that clearly communicates expertise across Family, Corporate, and Criminal Law, driving direct consultation requests.",
+    tech: ["Web Design", "CMS Integration", "SEO", "Responsive UI"],
+    github: null as string | null, // No public repo
+    demo: "https://www.aslegalworks.com/",
   },
 ];
 
 /* ─── COMPONENT ─── */
 
 export default function Freelance() {
-  const calendlyUrl = "https://calendly.com/your-calendar";
+  const calendlyUrl = "https://calendly.com/vineetkamath1997";
   const [cursor, setCursor] = useState({ x: 50, y: 50 });
 
   useEffect(() => {
@@ -421,6 +421,25 @@ export default function Freelance() {
                   </div>
                 </FadeIn>
               ))}
+
+              {/* Main Site Link Card */}
+              <FadeIn delay={150 * 3} className="flex">
+                <a href="/" className="group relative bg-primary/5 border border-primary/20 rounded-2xl p-8 flex flex-col justify-center items-center text-center overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                  <div className="relative z-10">
+                    <div className="mx-auto p-4 bg-background border border-primary/30 rounded-full text-primary mb-6 w-fit transition-transform duration-500 group-hover:scale-110">
+                      <ArrowRight size={32} className="group-hover:translate-x-1 transition-transform" />
+                    </div>
+                    <h4 className="text-2xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors duration-300">
+                      View Full Portfolio
+                    </h4>
+                    <p className="text-muted-foreground">
+                      Looking for my complete work history, open-source contributions, and more detailed projects?
+                    </p>
+                  </div>
+                </a>
+              </FadeIn>
             </div>
           </div>
         </section>
@@ -462,7 +481,7 @@ export default function Freelance() {
                     />
                   </a>
                   <a
-                    href="mailto:vineetkamath199@gmail.com"
+                    href="mailto:vineetkamath1997@gmail.com"
                     className="flex items-center justify-center gap-2 px-10 py-4 bg-background text-foreground border-2 border-border font-medium rounded-xl hover:border-primary/50 hover:bg-secondary transition-all duration-200 w-full sm:w-auto text-lg"
                   >
                     Or send an email

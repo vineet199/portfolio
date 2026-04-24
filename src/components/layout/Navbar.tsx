@@ -3,7 +3,7 @@ import { Menu, X, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { cn } from "@/lib/utils";
 
-const navLinks = [
+const defaultLinks = [
   { name: "About", href: "#about" },
   { name: "Skills", href: "#skills" },
   { name: "Projects", href: "#projects" },
@@ -11,11 +11,22 @@ const navLinks = [
   { name: "Contact", href: "#contact" },
 ];
 
+const freelanceLinks = [
+  { name: "Services", href: "#freelance-services" },
+  { name: "Process", href: "#freelance-process" },
+  { name: "Portfolio", href: "#freelance-featured" },
+  { name: "Contact", href: "#freelance-contact" },
+];
+
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>("#about");
+  const [activeSection, setActiveSection] = useState<string>("");
   const { theme, toggleTheme } = useTheme();
+
+  // Determine which links to show based on the current path
+  const isFreelance = typeof window !== "undefined" && window.location.pathname === "/freelance";
+  const navLinks = isFreelance ? freelanceLinks : defaultLinks;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,7 +38,7 @@ export function Navbar() {
         .filter(Boolean) as HTMLElement[];
 
       const scrollPos = window.scrollY + 140;
-      let current = "#about";
+      let current = navLinks[0]?.href || "";
 
       for (const section of sections) {
         if (scrollPos >= section.offsetTop) {
@@ -35,27 +46,25 @@ export function Navbar() {
         }
       }
 
-      // route-based active state (e.g. /freelance)
-      if (window.location.pathname === "/freelance") {
-        setActiveSection("/freelance");
-      } else {
-        setActiveSection(current);
-      }
+      setActiveSection(current);
     };
 
     handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [navLinks]);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setMobileMenuOpen(false);
+    
     if (href.startsWith("/")) {
       // navigate to a different route
       window.location.href = href;
       return;
     }
+    
+    // Smooth scroll to anchor on the same page
     const element = document.querySelector(href);
     if (element) {
       const offsetTop = element.getBoundingClientRect().top + window.scrollY - 100;
