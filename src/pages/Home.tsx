@@ -6,6 +6,7 @@ import { SkillsSection } from "@/components/sections/SkillsSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { TrustedByStrip } from "@/components/sections/TrustedByStrip";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       
       <main className="flex-grow">
         <HeroSection />
+        <TrustedByStrip />
         <AboutSection />
         <SkillsSection />
         <ProjectsSection />

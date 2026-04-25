@@ -6,6 +6,13 @@ import { Navbar } from "@/components/layout/Navbar";
 import { FadeIn } from "@/components/FadeIn";
 import { useSound } from "@/hooks/useSound";
 import {
+  ArchitectureBlueprintSection,
+  CaseStudyDevice,
+  HeroBuildScene,
+  ProcessPipelineSection,
+  Tilt3DCard,
+} from "@/components/sections/Freelance3D";
+import {
   StatsSection,
   TrustedBySection,
   TechStackSection,
@@ -41,6 +48,8 @@ const services = [
     description:
       "Production-grade React / Next / Vite apps with SSR, accessibility, and performance optimization baked in.",
     tech: ["React", "Next.js", "Vite", "TypeScript"],
+    deliverables: ["Responsive product UI", "SEO + metadata", "Analytics-ready events"],
+    cta: "Build a web app",
   },
   {
     icon: <Smartphone className="w-6 h-6" />,
@@ -48,6 +57,8 @@ const services = [
     description:
       "Cross-platform React Native / Expo apps with native integrations for iOS & Android.",
     tech: ["React Native", "Expo", "iOS", "Android"],
+    deliverables: ["App flows + navigation", "Native integrations", "Store-ready handoff"],
+    cta: "Launch mobile",
   },
   {
     icon: <Server className="w-6 h-6" />,
@@ -55,6 +66,8 @@ const services = [
     description:
       "Well-architected APIs, serverless and containerized platforms, and CI/CD pipelines.",
     tech: ["Node.js", "Java", "Kotlin", "AWS", "Docker"],
+    deliverables: ["Typed API contracts", "Auth + background jobs", "CI/CD + observability"],
+    cta: "Scale backend",
   },
 ];
 
@@ -65,6 +78,7 @@ const processSteps = [
     title: "Discovery",
     description:
       "Clarify goals, timeline and success metrics. I ask the right questions so nothing gets lost in translation.",
+    deliverables: ["Scope", "Milestones", "Estimate"],
   },
   {
     icon: <Hammer className="w-5 h-5" />,
@@ -72,6 +86,7 @@ const processSteps = [
     title: "Build",
     description:
       "Deliver working increments with demos and feedback loops. You see real progress every week.",
+    deliverables: ["PRs", "Weekly demos", "Feedback loops"],
   },
   {
     icon: <PackageCheck className="w-5 h-5" />,
@@ -79,6 +94,7 @@ const processSteps = [
     title: "Handoff",
     description:
       "Documentation, knowledge transfer and ongoing support options. You own everything.",
+    deliverables: ["Docs", "Deployment", "Support options"],
   },
 ];
 
@@ -92,6 +108,8 @@ const caseStudies = [
     github: null as string | null, // Private repo
     demo: "https://www.kams-gifts.in/",
     demoVideoUrl: `${import.meta.env.BASE_URL}assets/videos/kams_demo.webp`,
+    badges: ["B2B catalog", "SEO-friendly", "Fast discovery"],
+    metric: "Reduced onboarding friction",
   },
   {
     title: "Mango Pre-Order Platform",
@@ -102,6 +120,8 @@ const caseStudies = [
     github: null as string | null, // Private repo
     demo: "https://mango-paradise.vercel.app/",
     demoVideoUrl: `${import.meta.env.BASE_URL}assets/videos/mango_demo.webp`,
+    badges: ["E-commerce flow", "UPI workflow", "Order tracking"],
+    metric: "Automated manual ordering",
   },
   {
     title: "A S Legal Works",
@@ -112,6 +132,8 @@ const caseStudies = [
     github: null as string | null, // No public repo
     demo: "https://www.aslegalworks.com/",
     demoVideoUrl: `${import.meta.env.BASE_URL}assets/videos/aslegal_demo.webp`,
+    badges: ["Lead capture", "Trust-building", "Mobile-friendly"],
+    metric: "Centralized client inquiries",
   },
 ];
 
@@ -120,7 +142,8 @@ const caseStudies = [
 export default function Freelance() {
   const calendlyUrl = "https://calendly.com/vineetkamath1997";
   const [cursor, setCursor] = useState({ x: 50, y: 50 });
-  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const [isHeroCtaActive, setIsHeroCtaActive] = useState(false);
+  const [selectedCaseStudy, setSelectedCaseStudy] = useState<(typeof caseStudies)[number] | null>(null);
   const { playHover, playClick } = useSound();
 
   useEffect(() => {
@@ -181,58 +204,72 @@ export default function Freelance() {
             }}
           />
 
-          <div className="max-w-6xl mx-auto px-6 md:px-12 w-full">
-            <FadeIn delay={100}>
-              <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary border border-border text-sm font-medium text-muted-foreground">
-                <Sparkles size={14} className="text-primary" />
-                Available for freelance engagements
+          <div className="max-w-7xl mx-auto px-6 md:px-12 w-full">
+            <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.03fr)_minmax(380px,0.97fr)]">
+              <div className="relative z-10">
+                <FadeIn delay={100}>
+                  <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-secondary border border-border text-sm font-medium text-muted-foreground">
+                    <Sparkles size={14} className="text-primary" />
+                    Available for freelance engagements
+                  </div>
+                </FadeIn>
+
+                <FadeIn delay={200}>
+                  <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tight text-foreground max-w-4xl leading-[1.1]">
+                    Let's build{" "}
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6F4E37] via-[#8B5E3C] to-[#A47148]">
+                      something great
+                    </span>{" "}
+                    together.
+                  </h1>
+                </FadeIn>
+
+                <FadeIn delay={300}>
+                  <p className="mt-6 text-xl md:text-2xl text-muted-foreground max-w-2xl leading-relaxed">
+                    I help startups and product teams build production-ready web and
+                    mobile applications, and scalable backend systems. Short
+                    engagements, focused outcomes.
+                  </p>
+                </FadeIn>
+
+                <FadeIn delay={400}>
+                  <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    <a
+                      href={calendlyUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      onMouseEnter={() => {
+                        setIsHeroCtaActive(true);
+                        playHover();
+                      }}
+                      onMouseLeave={() => setIsHeroCtaActive(false)}
+                      onFocus={() => setIsHeroCtaActive(true)}
+                      onBlur={() => setIsHeroCtaActive(false)}
+                      onClick={playClick}
+                      className="group flex items-center justify-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-medium rounded-xl hover:bg-primary/90 hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-primary/20 transition-all duration-200 w-full sm:w-auto"
+                    >
+                      <Calendar size={18} />
+                      Schedule a call
+                      <ArrowRight
+                        size={18}
+                        className="group-hover:translate-x-1 transition-transform"
+                      />
+                    </a>
+                    <a
+                      href="/Vineet_Kamath_Resume.pdf"
+                      className="flex items-center justify-center gap-2 px-8 py-4 bg-background text-foreground border-2 border-border font-medium rounded-xl hover:border-primary/50 hover:bg-secondary transition-all duration-200 w-full sm:w-auto"
+                    >
+                      <FileText size={18} />
+                      View resume
+                    </a>
+                  </div>
+                </FadeIn>
               </div>
-            </FadeIn>
 
-            <FadeIn delay={200}>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tight text-foreground max-w-4xl leading-[1.1]">
-                Let's build{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6F4E37] via-[#8B5E3C] to-[#A47148]">
-                  something great
-                </span>{" "}
-                together.
-              </h1>
-            </FadeIn>
-
-            <FadeIn delay={300}>
-              <p className="mt-6 text-xl md:text-2xl text-muted-foreground max-w-2xl leading-relaxed">
-                I help startups and product teams build production-ready web and
-                mobile applications, and scalable backend systems. Short
-                engagements, focused outcomes.
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={400}>
-              <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <a
-                  href={calendlyUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  onMouseEnter={playHover}
-                  onClick={playClick}
-                  className="group flex items-center justify-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-medium rounded-xl hover:bg-primary/90 hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-primary/20 transition-all duration-200 w-full sm:w-auto"
-                >
-                  <Calendar size={18} />
-                  Schedule a call
-                  <ArrowRight
-                    size={18}
-                    className="group-hover:translate-x-1 transition-transform"
-                  />
-                </a>
-                <a
-                  href="/Vineet_Kamath_Resume.pdf"
-                  className="flex items-center justify-center gap-2 px-8 py-4 bg-background text-foreground border-2 border-border font-medium rounded-xl hover:border-primary/50 hover:bg-secondary transition-all duration-200 w-full sm:w-auto"
-                >
-                  <FileText size={18} />
-                  View resume
-                </a>
-              </div>
-            </FadeIn>
+              <FadeIn delay={250} className="relative z-0">
+                <HeroBuildScene cursor={cursor} assembling={isHeroCtaActive} />
+              </FadeIn>
+            </div>
           </div>
 
           <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce hidden md:block">
@@ -272,10 +309,12 @@ export default function Freelance() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {services.map((service, idx) => (
                 <FadeIn key={service.title} delay={idx * 150} className="flex">
-                  <div className="group relative bg-card border rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1">
+                  <Tilt3DCard className="group relative bg-card border rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl">
                     <div className="absolute -inset-x-4 -top-24 -bottom-4 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                    <div className="relative z-10">
-                      <div className="p-3 bg-secondary rounded-xl text-primary mb-6 w-fit transition-transform duration-500 group-hover:rotate-3 group-hover:scale-105">
+                    <div className="absolute right-6 top-6 h-16 w-16 rounded-2xl border border-primary/10 bg-primary/5 opacity-0 transition-all duration-500 group-hover:translate-y-2 group-hover:translate-x-1 group-hover:opacity-100" style={{ transform: "translateZ(12px) rotate(12deg)" }} />
+                    <div className="absolute right-12 top-14 h-10 w-10 rounded-xl border border-primary/10 bg-background/70 opacity-0 transition-all duration-500 group-hover:-translate-y-1 group-hover:opacity-100" style={{ transform: "translateZ(34px) rotate(-8deg)" }} />
+                    <div className="relative z-10" style={{ transform: "translateZ(34px)" }}>
+                      <div className="p-3 bg-secondary rounded-xl text-primary mb-6 w-fit transition-transform duration-500 group-hover:rotate-3 group-hover:scale-110 group-hover:shadow-lg">
                         {service.icon}
                       </div>
                       <h4 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">
@@ -284,20 +323,41 @@ export default function Freelance() {
                       <p className="text-muted-foreground mb-8 leading-relaxed">
                         {service.description}
                       </p>
+                      <div className="mb-7 rounded-2xl border border-primary/15 bg-background/70 p-4 opacity-95 transition-all duration-500 group-hover:border-primary/30 group-hover:bg-primary/5" style={{ transform: "translateZ(42px)" }}>
+                        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary">
+                          Typical deliverables
+                        </p>
+                        <ul className="space-y-2">
+                          {service.deliverables.map((deliverable) => (
+                            <li key={deliverable} className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                              {deliverable}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
-                    <div className="relative z-10 mt-auto">
+                    <div className="relative z-10 mt-auto" style={{ transform: "translateZ(48px)" }}>
                       <ul className="flex flex-wrap gap-2 text-sm font-mono text-muted-foreground/80">
                         {service.tech.map((t) => (
                           <li
                             key={t}
-                            className="bg-background border px-2 py-0.5 rounded transition-colors duration-300 group-hover:bg-secondary/70"
+                            className="bg-background border px-2 py-0.5 rounded transition-all duration-300 group-hover:bg-secondary/70 group-hover:border-primary/30"
                           >
                             {t}
                           </li>
                         ))}
                       </ul>
+                      <button
+                        type="button"
+                        onClick={() => scrollToSection("freelance-contact")}
+                        className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:gap-3"
+                      >
+                        {service.cta}
+                        <ArrowRight className="h-4 w-4" />
+                      </button>
                     </div>
-                  </div>
+                  </Tilt3DCard>
                 </FadeIn>
               ))}
             </div>
@@ -307,50 +367,10 @@ export default function Freelance() {
 
 
         {/* ─── PROCESS ─── */}
-        <section id="freelance-process" className="py-24 md:py-32">
-          <div className="max-w-4xl mx-auto px-6 md:px-12">
-            <FadeIn>
-              <div className="text-center max-w-2xl mx-auto mb-16">
-                <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-3">
-                  02. Process
-                </h2>
-                <h3 className="text-3xl md:text-4xl font-display font-bold">
-                  How I work
-                </h3>
-              </div>
-            </FadeIn>
+        <ProcessPipelineSection steps={processSteps} />
 
-            <div className="relative">
-              <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border hidden md:block" />
-              <div className="space-y-12">
-                {processSteps.map((step, idx) => (
-                  <FadeIn key={step.step} delay={idx * 150}>
-                    <div className="relative pl-0 md:pl-16 group">
-                      <div className="hidden md:flex absolute left-0 top-1 h-12 w-12 rounded-full border-2 border-primary bg-background items-center justify-center group-hover:scale-110 group-hover:bg-primary transition-all duration-300 z-10">
-                        <span className="text-primary group-hover:text-primary-foreground font-mono text-sm font-bold transition-colors duration-300">
-                          {step.step}
-                        </span>
-                      </div>
-                      <div className="bg-card border rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                            {step.icon}
-                          </div>
-                          <h4 className="text-xl font-bold group-hover:text-primary transition-colors duration-300">
-                            {step.title}
-                          </h4>
-                        </div>
-                        <p className="text-muted-foreground leading-relaxed">
-                          {step.description}
-                        </p>
-                      </div>
-                    </div>
-                  </FadeIn>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* ─── ARCHITECTURE ─── */}
+        <ArchitectureBlueprintSection />
 
         {/* ─── TECH STACK ─── */}
         <TechStackSection />
@@ -365,7 +385,7 @@ export default function Freelance() {
               <div className="flex items-center gap-4 mb-12">
                 <div>
                   <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-2">
-                    05. Case Studies
+                    06. Case Studies
                   </h2>
                   <h3 className="text-3xl md:text-4xl font-display font-bold">
                     Real results, real projects
@@ -381,15 +401,21 @@ export default function Freelance() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {caseStudies.map((project, idx) => (
                 <FadeIn key={project.title} delay={idx * 150} className="flex">
-                  <div className="group relative bg-card border rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1">
+                  <Tilt3DCard className="group relative bg-card border rounded-2xl p-6 flex flex-col justify-between overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl">
                     <div className="absolute -inset-x-4 -top-24 -bottom-4 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                    
-                    {/* Approach A: Hover Thumbnail */}
+
                     {project.demoVideoUrl && (
-                      <img src={project.demoVideoUrl} alt="Demo" className="absolute inset-x-0 top-0 h-48 w-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0" style={{ maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)' }} />
+                      <CaseStudyDevice
+                        title={project.title}
+                        previewUrl={project.demoVideoUrl}
+                        onOpen={() => {
+                          playClick();
+                          setSelectedCaseStudy(project);
+                        }}
+                      />
                     )}
 
-                    <div className="relative z-10">
+                    <div className="relative z-10" style={{ transform: "translateZ(28px)" }}>
                       <div className="flex justify-between items-start mb-6">
                         <div className="p-3 bg-secondary rounded-xl text-primary transition-transform duration-500 group-hover:rotate-3 group-hover:scale-105">
                           <Folder size={24} />
@@ -405,7 +431,7 @@ export default function Freelance() {
                               onMouseEnter={playHover}
                               onClick={() => {
                                 playClick();
-                                setSelectedVideo(project.demoVideoUrl as string);
+                                setSelectedCaseStudy(project);
                               }} 
                               className="text-muted-foreground hover:text-primary transition-colors" 
                               aria-label={`Play Demo of ${project.title}`}
@@ -425,6 +451,21 @@ export default function Freelance() {
                         {project.title}
                       </h4>
 
+                      <div className="mb-4 flex flex-wrap gap-2">
+                        {project.badges.map((badge) => (
+                          <span
+                            key={badge}
+                            className="rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary"
+                          >
+                            {badge}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="mb-5 rounded-xl border bg-background/70 p-3 text-sm font-medium text-foreground">
+                        <span className="text-primary">Impact:</span> {project.metric}
+                      </div>
+
                       <div className="space-y-3 mb-6">
                         <div>
                           <span className="text-xs font-semibold text-primary uppercase tracking-wider">Problem</span>
@@ -441,7 +482,7 @@ export default function Freelance() {
                       </div>
                     </div>
 
-                    <div className="relative z-10 mt-auto">
+                    <div className="relative z-10 mt-auto" style={{ transform: "translateZ(38px)" }}>
                       <ul className="flex flex-wrap gap-2 text-sm font-mono text-muted-foreground/80">
                         {project.tech.map((t) => (
                           <li key={t} className="bg-background border px-2 py-0.5 rounded transition-colors duration-300 group-hover:bg-secondary/70">
@@ -450,32 +491,34 @@ export default function Freelance() {
                         ))}
                       </ul>
                     </div>
-                  </div>
+                  </Tilt3DCard>
                 </FadeIn>
               ))}
 
               {/* Main Site Link Card */}
               <FadeIn delay={150 * 3} className="flex">
-                <Link 
-                  href="/" 
-                  onMouseEnter={playHover}
-                  onClick={playClick}
-                  className="group relative bg-primary/5 border border-primary/20 rounded-2xl p-8 flex flex-col justify-center items-center text-center overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                <Tilt3DCard className="group relative w-full h-full rounded-2xl">
+                  <Link 
+                    href="/" 
+                    onMouseEnter={playHover}
+                    onClick={playClick}
+                    className="relative bg-primary/5 border border-primary/20 rounded-2xl p-8 flex flex-col justify-center items-center text-center overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                  <div className="relative z-10">
-                    <div className="mx-auto p-4 bg-background border border-primary/30 rounded-full text-primary mb-6 w-fit transition-transform duration-500 group-hover:scale-110">
-                      <ArrowRight size={32} className="group-hover:translate-x-1 transition-transform" />
+                    <div className="relative z-10" style={{ transform: "translateZ(36px)" }}>
+                      <div className="mx-auto p-4 bg-background border border-primary/30 rounded-full text-primary mb-6 w-fit transition-transform duration-500 group-hover:scale-110">
+                        <ArrowRight size={32} className="group-hover:translate-x-1 transition-transform" />
+                      </div>
+                      <h4 className="text-2xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors duration-300">
+                        View Full Portfolio
+                      </h4>
+                      <p className="text-muted-foreground">
+                        Looking for my complete work history, open-source contributions, and more detailed projects?
+                      </p>
                     </div>
-                    <h4 className="text-2xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors duration-300">
-                      View Full Portfolio
-                    </h4>
-                    <p className="text-muted-foreground">
-                      Looking for my complete work history, open-source contributions, and more detailed projects?
-                    </p>
-                  </div>
-                </Link>
+                  </Link>
+                </Tilt3DCard>
               </FadeIn>
             </div>
           </div>
@@ -493,7 +536,7 @@ export default function Freelance() {
             <FadeIn>
               <div className="text-center">
                 <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-3">
-                  08. Let's Talk
+                  09. Let's Talk
                 </h2>
                 <h3 className="text-3xl md:text-5xl font-display font-bold mb-6">
                   Ready to work together?
@@ -533,28 +576,105 @@ export default function Freelance() {
       <Footer />
 
       <AnimatePresence>
-        {selectedVideo && (
+        {selectedCaseStudy && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm"
-            onClick={() => setSelectedVideo(null)}
+            onClick={() => setSelectedCaseStudy(null)}
           >
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-5xl rounded-2xl overflow-hidden shadow-2xl border bg-card"
+              className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto rounded-2xl border bg-card shadow-2xl"
             >
               <button
-                onClick={() => setSelectedVideo(null)}
+                onClick={() => setSelectedCaseStudy(null)}
                 className="absolute top-4 right-4 z-10 p-2 bg-background/50 hover:bg-background/80 rounded-full text-foreground transition-colors"
+                aria-label="Close case study"
               >
                 <X size={20} />
               </button>
-              <img src={selectedVideo} alt="Demo Video" className="w-full h-auto max-h-[85vh] object-contain" />
+              <div className="grid gap-0 lg:grid-cols-[1.15fr_0.85fr]">
+                <div className="relative border-b bg-secondary/40 p-4 lg:border-b-0 lg:border-r">
+                  <div className="overflow-hidden rounded-2xl border bg-background shadow-xl">
+                    <div className="flex h-9 items-center gap-1.5 border-b bg-secondary/80 px-3">
+                      <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
+                      <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/80" />
+                      <span className="h-2.5 w-2.5 rounded-full bg-green-400/80" />
+                      <span className="ml-2 h-3 flex-1 rounded-full bg-background/70" />
+                    </div>
+                    <img
+                      src={selectedCaseStudy.demoVideoUrl}
+                      alt={`${selectedCaseStudy.title} demo preview`}
+                      className="h-auto max-h-[70vh] w-full object-contain"
+                    />
+                  </div>
+                </div>
+                <div className="p-6 md:p-8">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-primary">
+                    Case study viewer
+                  </p>
+                  <h3 className="pr-10 text-3xl font-display font-bold">
+                    {selectedCaseStudy.title}
+                  </h3>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {selectedCaseStudy.badges.map((badge) => (
+                      <span key={badge} className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                        {badge}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="mt-5 rounded-2xl border bg-background/70 p-4">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-primary">Impact</p>
+                    <p className="mt-1 font-medium text-foreground">{selectedCaseStudy.metric}</p>
+                  </div>
+                  <div className="mt-6 space-y-5">
+                    {[
+                      ["Problem", selectedCaseStudy.problem],
+                      ["Approach", selectedCaseStudy.approach],
+                      ["Result", selectedCaseStudy.result],
+                    ].map(([label, value]) => (
+                      <div key={label}>
+                        <p className="text-xs font-semibold uppercase tracking-widest text-primary">{label}</p>
+                        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{value}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {selectedCaseStudy.tech.map((tech) => (
+                      <span key={tech} className="rounded border bg-secondary px-2.5 py-1 font-mono text-xs text-muted-foreground">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                    {selectedCaseStudy.demo && (
+                      <a
+                        href={selectedCaseStudy.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-medium text-primary-foreground hover:bg-primary/90"
+                      >
+                        Visit live project
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    )}
+                    <a
+                      href={calendlyUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center justify-center gap-2 rounded-xl border bg-background px-5 py-3 font-medium text-foreground hover:border-primary/50 hover:bg-secondary"
+                    >
+                      Build something similar
+                      <Calendar className="h-4 w-4" />
+                    </a>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         )}
