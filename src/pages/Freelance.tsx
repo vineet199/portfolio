@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { FadeIn } from "@/components/FadeIn";
+import { useSound } from "@/hooks/useSound";
 import {
   StatsSection,
   TrustedBySection,
@@ -120,6 +121,7 @@ export default function Freelance() {
   const calendlyUrl = "https://calendly.com/vineetkamath1997";
   const [cursor, setCursor] = useState({ x: 50, y: 50 });
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const { playHover, playClick } = useSound();
 
   useEffect(() => {
     document.title = "Freelance — Vineet Kamath";
@@ -211,6 +213,8 @@ export default function Freelance() {
                   href={calendlyUrl}
                   target="_blank"
                   rel="noreferrer"
+                  onMouseEnter={playHover}
+                  onClick={playClick}
                   className="group flex items-center justify-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-medium rounded-xl hover:bg-primary/90 hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-primary/20 transition-all duration-200 w-full sm:w-auto"
                 >
                   <Calendar size={18} />
@@ -397,7 +401,15 @@ export default function Freelance() {
                             </a>
                           )}
                           {project.demoVideoUrl && (
-                            <button onClick={() => setSelectedVideo(project.demoVideoUrl as string)} className="text-muted-foreground hover:text-primary transition-colors" aria-label={`Play Demo of ${project.title}`}>
+                            <button 
+                              onMouseEnter={playHover}
+                              onClick={() => {
+                                playClick();
+                                setSelectedVideo(project.demoVideoUrl as string);
+                              }} 
+                              className="text-muted-foreground hover:text-primary transition-colors" 
+                              aria-label={`Play Demo of ${project.title}`}
+                            >
                               <PlayCircle size={20} />
                             </button>
                           )}
@@ -444,7 +456,12 @@ export default function Freelance() {
 
               {/* Main Site Link Card */}
               <FadeIn delay={150 * 3} className="flex">
-                <Link href="/" className="group relative bg-primary/5 border border-primary/20 rounded-2xl p-8 flex flex-col justify-center items-center text-center overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1">
+                <Link 
+                  href="/" 
+                  onMouseEnter={playHover}
+                  onClick={playClick}
+                  className="group relative bg-primary/5 border border-primary/20 rounded-2xl p-8 flex flex-col justify-center items-center text-center overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1"
+                >
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
                   <div className="relative z-10">
