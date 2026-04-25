@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { FadeIn } from "@/components/FadeIn";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
   Users,
   Clock,
@@ -17,6 +17,7 @@ import {
   Rocket,
   Quote,
 } from "lucide-react";
+import { useState } from "react";
 
 /* ─────────────────────────────────────────────
    STATS BANNER
@@ -139,7 +140,7 @@ const techCategories = [
 
 export function TechStackSection() {
   return (
-    <section className="py-24 md:py-32 bg-secondary/30 border-y">
+    <section className="py-24 md:py-32 bg-secondary/30 border-y overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 md:px-12">
         <FadeIn>
           <div className="text-center max-w-2xl mx-auto mb-16">
@@ -149,35 +150,70 @@ export function TechStackSection() {
             <h3 className="text-3xl md:text-4xl font-display font-bold">
               Technologies I work with
             </h3>
+            <p className="mt-4 text-muted-foreground">
+              Grab a pill and throw it around! All elements are physically interactive.
+            </p>
           </div>
         </FadeIn>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {techCategories.map((cat, idx) => (
-            <FadeIn key={cat.title} delay={idx * 100} className="h-full">
-              <div className="bg-card border rounded-2xl p-7 h-full shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300 hover:-translate-y-0.5">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    {cat.icon}
-                  </div>
-                  <h4 className="text-lg font-bold">{cat.title}</h4>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {cat.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-2.5 py-1 bg-secondary text-secondary-foreground text-xs font-medium rounded-lg border border-border/50 hover:border-primary/40 transition-colors"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </FadeIn>
+            <TechCategoryCard key={cat.title} cat={cat} delay={idx * 100} />
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function TechCategoryCard({ cat, delay }: { cat: typeof techCategories[0]; delay: number }) {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  return (
+    <FadeIn delay={delay} className="h-full">
+      <div
+        onMouseMove={handleMouseMove}
+        className="group relative bg-card border rounded-2xl p-7 h-full shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300 hover:-translate-y-0.5 overflow-hidden"
+      >
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
+          style={{
+            background: useTransform(
+              [mouseX, mouseY],
+              ([x, y]) => `radial-gradient(600px circle at ${x}px ${y}px, var(--primary-muted), transparent 40%)`
+            ),
+          }}
+        />
+
+        <div className="relative z-10 flex items-center gap-3 mb-4">
+          <div className="p-2 bg-primary/10 rounded-lg">
+            {cat.icon}
+          </div>
+          <h4 className="text-lg font-bold">{cat.title}</h4>
+        </div>
+        <div className="relative z-10 flex flex-wrap gap-2">
+          {cat.skills.map((skill) => (
+            <motion.span
+              key={skill}
+              drag
+              dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+              dragElastic={0.7}
+              whileDrag={{ scale: 1.1, zIndex: 50 }}
+              className="cursor-grab active:cursor-grabbing px-2.5 py-1 bg-secondary text-secondary-foreground text-xs font-medium rounded-lg border border-border/50 hover:border-primary/40 transition-colors select-none"
+            >
+              {skill}
+            </motion.span>
+          ))}
+        </div>
+      </div>
+    </FadeIn>
   );
 }
 
@@ -396,15 +432,13 @@ export function FAQSection() {
                   </span>
                   <ChevronDown
                     size={20}
-                    className={`shrink-0 text-muted-foreground transition-transform duration-300 ${
-                      openIndex === idx ? "rotate-180 text-primary" : ""
-                    }`}
+                    className={`shrink-0 text-muted-foreground transition-transform duration-300 ${openIndex === idx ? "rotate-180 text-primary" : ""
+                      }`}
                   />
                 </button>
                 <div
-                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                    openIndex === idx ? "max-h-48 opacity-100" : "max-h-0 opacity-0"
-                  }`}
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${openIndex === idx ? "max-h-48 opacity-100" : "max-h-0 opacity-0"
+                    }`}
                 >
                   <p className="px-6 pb-6 text-muted-foreground leading-relaxed">
                     {faq.a}
