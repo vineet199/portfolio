@@ -36,22 +36,65 @@ export function StatsSection() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           {stats.map((stat, idx) => (
             <FadeIn key={stat.label} delay={idx * 100}>
-              <div className="group text-center p-6 rounded-2xl bg-card border hover:border-primary/40 hover:shadow-lg transition-all duration-500 hover:-translate-y-1">
-                <div className="inline-flex p-2.5 rounded-xl bg-primary/10 text-primary mb-4 group-hover:scale-110 transition-transform duration-300">
-                  {stat.icon}
-                </div>
-                <div className="text-3xl md:text-4xl font-display font-bold text-foreground mb-1 group-hover:text-primary transition-colors duration-300">
-                  {stat.value}
-                </div>
-                <div className="text-sm text-muted-foreground font-medium">
-                  {stat.label}
-                </div>
-              </div>
+              <StatCard3D stat={stat} index={idx} />
             </FadeIn>
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function StatCard3D({ stat, index }: { stat: typeof stats[number]; index: number }) {
+  const shouldReduceMotion = Boolean(useReducedMotion());
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+  const rotateX = useSpring(useTransform(mouseY, [0, 1], [8, -8]), { stiffness: 240, damping: 26 });
+  const rotateY = useSpring(useTransform(mouseX, [0, 1], [-8, 8]), { stiffness: 240, damping: 26 });
+  const glow = useTransform([mouseX, mouseY], ([x, y]) => {
+    return `radial-gradient(circle at ${Number(x) * 100}% ${Number(y) * 100}%, hsl(var(--primary) / 0.18), transparent 42%)`;
+  });
+
+  const handleMouseMove = ({ currentTarget, clientX, clientY }: React.MouseEvent<HTMLDivElement>) => {
+    const rect = currentTarget.getBoundingClientRect();
+    mouseX.set((clientX - rect.left) / rect.width);
+    mouseY.set((clientY - rect.top) / rect.height);
+  };
+
+  return (
+    <motion.div
+      onMouseMove={shouldReduceMotion ? undefined : handleMouseMove}
+      onMouseLeave={() => {
+        mouseX.set(0.5);
+        mouseY.set(0.5);
+      }}
+      whileTap={shouldReduceMotion ? undefined : { scale: 0.97, rotateX: 0, rotateY: 0 }}
+      style={shouldReduceMotion ? undefined : { rotateX, rotateY, transformPerspective: 900, transformStyle: "preserve-3d" }}
+      className="group relative overflow-hidden rounded-2xl border bg-card p-5 text-center shadow-sm transition-all duration-500 hover:border-primary/40 hover:shadow-xl md:p-6"
+    >
+      <motion.div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: glow }} />
+      <div className="relative z-10" style={{ transform: "translateZ(32px)" }}>
+        <div className="inline-flex p-2.5 rounded-xl bg-primary/10 text-primary mb-4 group-hover:scale-110 transition-transform duration-300">
+          {stat.icon}
+        </div>
+        <div className="text-3xl md:text-4xl font-display font-bold text-foreground mb-1 group-hover:text-primary transition-colors duration-300">
+          {stat.value}
+        </div>
+        <div className="text-sm text-muted-foreground font-medium">
+          {stat.label}
+        </div>
+        <div className="mt-4 grid grid-cols-3 gap-1.5" aria-hidden="true">
+          {[0, 1, 2].map((bar) => (
+            <motion.span
+              key={bar}
+              className="h-1.5 rounded-full bg-primary/20"
+              animate={shouldReduceMotion ? undefined : { opacity: [0.35, 1, 0.35], scaleX: [0.45, 1, 0.45] }}
+              transition={{ duration: 2 + index * 0.2, repeat: Infinity, delay: bar * 0.18 }}
+            />
+          ))}
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
@@ -64,6 +107,8 @@ const companies = [
 ];
 
 export function TrustedBySection() {
+  const shouldReduceMotion = Boolean(useReducedMotion());
+
   return (
     <section className="py-16 md:py-20 bg-secondary/30 border-b">
       <div className="max-w-4xl mx-auto px-6 md:px-12">
@@ -81,11 +126,17 @@ export function TrustedBySection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {companies.map((company, idx) => (
             <FadeIn key={company.name} delay={idx * 150}>
-              <div className="group flex items-center gap-6 p-6 bg-card border rounded-2xl hover:border-primary/40 hover:shadow-lg transition-all duration-500 hover:-translate-y-0.5">
+              <motion.div
+                whileHover={shouldReduceMotion ? undefined : { rotateX: -5, rotateY: idx === 0 ? -6 : 6, y: -5 }}
+                whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
+                style={{ transformPerspective: 900, transformStyle: "preserve-3d" }}
+                className="group relative flex items-center gap-6 overflow-hidden rounded-2xl border bg-card p-6 shadow-sm transition-all duration-500 hover:border-primary/40 hover:shadow-xl"
+              >
+                <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary/10 blur-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <div className="shrink-0 w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-display font-bold text-2xl group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
                   {company.name[0]}
                 </div>
-                <div>
+                <div style={{ transform: "translateZ(28px)" }}>
                   <h4 className="text-xl font-bold group-hover:text-primary transition-colors duration-300">
                     {company.name}
                   </h4>
@@ -93,7 +144,7 @@ export function TrustedBySection() {
                     {company.role}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             </FadeIn>
           ))}
         </div>
@@ -168,7 +219,7 @@ export function TechStackSection() {
     <section className="py-24 md:py-32 bg-secondary/30 border-y overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 md:px-12">
         <FadeIn>
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="text-center max-w-2xl mx-auto mb-10 md:mb-16">
             <h2 className="text-sm font-semibold tracking-widest text-primary uppercase mb-3">
               04. Tech Stack
             </h2>
@@ -181,7 +232,7 @@ export function TechStackSection() {
           </div>
         </FadeIn>
 
-        <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] xl:items-start">
+        <div className="grid grid-cols-1 gap-6 md:gap-8 xl:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] xl:items-start">
           <TechOrbitGalaxy
             activeIndex={activeIndex}
             activeFilter={activeFilter}
@@ -190,17 +241,6 @@ export function TechStackSection() {
           />
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:sticky xl:top-24">
-            <FadeIn delay={150}>
-              <div className="rounded-2xl border bg-card/80 p-4 shadow-sm backdrop-blur-sm sm:col-span-2">
-                <p className="text-xs font-semibold uppercase tracking-widest text-primary">
-                  Capability cards
-                </p>
-                <h4 className="mt-1 text-lg font-bold">Compact stack coverage</h4>
-                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                  Active skills are highlighted here, keeping the builder column focused and collision-free.
-                </p>
-              </div>
-            </FadeIn>
             {techCategories.map((cat, idx) => (
               <TechCategoryCard
                 key={cat.title}
@@ -241,56 +281,40 @@ function TechOrbitGalaxy({
 
   return (
     <FadeIn delay={100} className="h-full">
-      <div className="relative h-full overflow-hidden rounded-[2rem] border bg-card/75 p-6 shadow-xl shadow-primary/5 backdrop-blur-sm md:p-8">
+      <div className="relative h-full overflow-hidden rounded-[1.5rem] border bg-card/75 p-4 shadow-xl shadow-primary/5 backdrop-blur-sm sm:rounded-[2rem] sm:p-6 md:p-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,hsl(var(--primary)/0.18),transparent_34%),radial-gradient(circle_at_15%_80%,hsl(var(--primary)/0.10),transparent_26%)]" />
 
-        <div className="relative z-10 mb-6 flex flex-wrap items-center justify-center gap-2">
-          {stackFilters.map((filter) => (
-            <button
-              key={filter}
-              type="button"
-              onClick={() => selectFilter(filter)}
-              className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/40 ${activeFilter === filter
-                ? "border-primary bg-primary text-primary-foreground shadow-lg shadow-primary/20"
-                : "border-border bg-background/80 text-muted-foreground hover:border-primary/40 hover:text-primary"
-                }`}
-            >
-              {filter}
-            </button>
-          ))}
-        </div>
-
-        <div className="relative z-10 grid gap-6">
-          <div className="grid gap-5 rounded-[1.75rem] border border-primary/10 bg-background/45 p-5 md:grid-cols-[auto_1fr] md:items-center">
+        <div className="relative z-10 grid gap-4 sm:gap-6">
+          <div className="grid gap-4 rounded-[1.5rem] border border-primary/10 bg-background/45 p-4 sm:rounded-[1.75rem] sm:p-5 md:grid-cols-[auto_1fr] md:items-center">
             <div
-              className="mx-auto flex h-28 w-28 shrink-0 flex-col items-center justify-center rounded-[1.75rem] border border-primary/25 bg-background/90 p-3 text-center shadow-2xl shadow-primary/10 backdrop-blur-md md:h-36 md:w-36"
+              className="mx-auto flex h-24 w-24 shrink-0 flex-col items-center justify-center rounded-[1.5rem] border border-primary/25 bg-background/90 p-2.5 text-center shadow-2xl shadow-primary/10 backdrop-blur-md sm:h-28 sm:w-28 sm:rounded-[1.75rem] sm:p-3 md:h-36 md:w-36"
               style={{ transform: "translateZ(84px)" }}
             >
-              <div className="mb-2 grid h-10 w-10 place-items-center rounded-2xl bg-primary/10 md:h-11 md:w-11">
+              <div className="mb-1.5 grid h-9 w-9 place-items-center rounded-2xl bg-primary/10 sm:mb-2 sm:h-10 sm:w-10 md:h-11 md:w-11">
                 {activeCategory.icon}
               </div>
               <p className="text-[10px] font-semibold uppercase tracking-widest text-primary md:text-xs">Active stack</p>
-              <h4 className="mt-1 text-base font-bold leading-tight md:text-lg">{activeCategory.title}</h4>
+              <h4 className="mt-1 text-sm font-bold leading-tight sm:text-base md:text-lg">{activeCategory.title}</h4>
             </div>
 
             <motion.div
               key={`${activeFilter}-${activeCategory.title}`}
               initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              className="rounded-2xl border bg-background/85 p-5 shadow-lg backdrop-blur"
+              className="rounded-2xl border bg-background/85 p-4 shadow-lg backdrop-blur sm:p-5"
             >
               <p className="text-xs font-semibold uppercase tracking-widest text-primary">
                 {activeFilter === "All" ? "Stack guidance" : `${activeFilter} stack`}
               </p>
-              <h4 className="mt-1 text-xl font-bold">{activeCategory.title}</h4>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              <h4 className="mt-1 text-lg font-bold sm:text-xl">{activeCategory.title}</h4>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">
                 {activeCategory.summary}
               </p>
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-3 flex flex-wrap gap-1.5 sm:mt-4 sm:gap-2">
                 {activeCategory.bestFor.map((item) => (
                   <span
                     key={item}
-                    className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary"
+                    className="rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary sm:px-3 sm:text-xs"
                   >
                     {item}
                   </span>
@@ -299,11 +323,11 @@ function TechOrbitGalaxy({
             </motion.div>
           </div>
 
-          <div className="rounded-2xl border bg-background/70 p-4 shadow-lg backdrop-blur">
+          <div className="rounded-2xl border bg-background/70 p-3 shadow-lg backdrop-blur sm:p-4">
             <p className="mb-3 text-center text-xs font-semibold uppercase tracking-widest text-primary">
               Skill categories
             </p>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3">
               {techCategories.map((cat, idx) => {
                 const isActive = idx === activeIndex;
                 const isRecommended = activeFilter !== "All" && cat.filters.includes(activeFilter);
@@ -315,14 +339,14 @@ function TechOrbitGalaxy({
                     onMouseEnter={() => onActiveIndexChange(idx)}
                     onFocus={() => onActiveIndexChange(idx)}
                     onClick={() => onActiveIndexChange(idx)}
-                    className={`flex min-h-14 items-center gap-3 rounded-2xl border px-4 py-3 text-left text-xs font-semibold shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/40 ${isActive
+                    className={`flex min-h-12 items-center gap-2 rounded-2xl border px-2.5 py-2 text-left text-[11px] font-semibold shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/40 sm:min-h-14 sm:gap-3 sm:px-4 sm:py-3 sm:text-xs ${isActive
                       ? "border-primary bg-primary text-primary-foreground shadow-primary/30"
                       : isRecommended
                         ? "border-primary/50 bg-primary/10 text-primary"
                         : "border-border bg-card text-foreground hover:border-primary/50 hover:text-primary"
                       }`}
                   >
-                    <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl ${isActive ? "bg-primary-foreground/15" : "bg-primary/10"}`}>
+                    <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl sm:h-9 sm:w-9 ${isActive ? "bg-primary-foreground/15" : "bg-primary/10"}`}>
                       {cat.icon}
                     </span>
                     <span>{cat.title}</span>
@@ -451,6 +475,10 @@ const engagements = [
 ];
 
 export function EngagementSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const shouldReduceMotion = Boolean(useReducedMotion());
+  const activeEngagement = engagements[activeIndex];
+
   return (
     <section className="py-24 md:py-32">
       <div className="max-w-6xl mx-auto px-6 md:px-12">
@@ -471,12 +499,24 @@ export function EngagementSection() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {engagements.map((eng, idx) => (
             <FadeIn key={eng.title} delay={idx * 150} className="flex">
-              <div className="group relative bg-card border rounded-2xl p-8 flex flex-col overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full shadow-sm hover:shadow-xl hover:-translate-y-1">
+              <motion.button
+                type="button"
+                onClick={() => setActiveIndex(idx)}
+                onFocus={() => setActiveIndex(idx)}
+                whileHover={shouldReduceMotion ? undefined : { rotateX: -5, y: -6 }}
+                whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
+                style={{ transformPerspective: 1000, transformStyle: "preserve-3d" }}
+                aria-pressed={activeIndex === idx}
+                className={`group relative bg-card border rounded-2xl p-8 flex flex-col overflow-hidden hover:border-primary/50 transition-all duration-500 w-full h-full text-left shadow-sm hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary/35 ${activeIndex === idx ? "border-primary/60 shadow-xl shadow-primary/10" : ""}`}
+              >
                 <div className="absolute -inset-x-4 -top-24 -bottom-4 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                <div className="absolute right-5 top-5 grid h-16 w-16 place-items-center rounded-2xl border border-primary/10 bg-primary/5 opacity-0 transition-all duration-500 group-hover:opacity-100" style={{ transform: "translateZ(16px) rotate(10deg)" }}>
+                  <span className="h-6 w-6 rounded-lg bg-primary/20" />
+                </div>
 
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-6">
-                    <div className="p-3 bg-secondary rounded-xl text-primary transition-transform duration-500 group-hover:rotate-3 group-hover:scale-105">
+                    <div className="p-3 bg-secondary rounded-xl text-primary transition-transform duration-500 group-hover:rotate-3 group-hover:scale-105" style={{ transform: "translateZ(28px)" }}>
                       {eng.icon}
                     </div>
                     <span className="text-xs font-mono text-primary bg-primary/10 px-3 py-1 rounded-full">
@@ -500,10 +540,35 @@ export function EngagementSection() {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </motion.button>
             </FadeIn>
           ))}
         </div>
+
+        <FadeIn delay={420}>
+          <motion.div
+            key={activeEngagement.title}
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 20, rotateX: 8 }}
+            animate={{ opacity: 1, y: 0, rotateX: 0 }}
+            className="mt-8 grid gap-4 rounded-2xl border bg-card/85 p-5 shadow-xl shadow-primary/5 backdrop-blur-sm md:grid-cols-[auto_1fr] md:items-center"
+          >
+            <div className="mx-auto grid h-20 w-20 place-items-center rounded-3xl border border-primary/20 bg-primary/10 text-primary shadow-inner md:mx-0">
+              {activeEngagement.icon}
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary">Selected engagement</p>
+              <h4 className="mt-1 text-2xl font-bold">{activeEngagement.title}</h4>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{activeEngagement.description}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {activeEngagement.features.map((feature) => (
+                  <span key={feature} className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                    {feature}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </FadeIn>
       </div>
     </section>
   );
@@ -534,6 +599,10 @@ const testimonials = [
 ];
 
 export function TestimonialsSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const shouldReduceMotion = Boolean(useReducedMotion());
+  const activeTestimonial = testimonials[activeIndex];
+
   return (
     <section className="py-24 md:py-32 bg-secondary/30 border-y">
       <div className="max-w-6xl mx-auto px-6 md:px-12">
@@ -548,28 +617,39 @@ export function TestimonialsSection() {
           </div>
         </FadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((t, idx) => (
-            <FadeIn key={idx} delay={idx * 150} className="flex">
-              <div className="group relative bg-card border rounded-2xl p-8 flex flex-col hover:border-primary/40 hover:shadow-xl transition-all duration-500 w-full hover:-translate-y-1">
-                <div className="absolute -inset-x-4 -top-24 -bottom-4 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        <div className="grid gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-stretch">
+          <div className="flex snap-x gap-3 overflow-x-auto pb-2 lg:grid lg:grid-cols-1 lg:overflow-visible lg:pb-0">
+            {testimonials.map((t, idx) => (
+              <button
+                key={t.role}
+                type="button"
+                onClick={() => setActiveIndex(idx)}
+                className={`min-w-[220px] snap-start rounded-2xl border p-4 text-left transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/35 ${activeIndex === idx ? "border-primary bg-primary/10 text-foreground shadow-lg shadow-primary/10" : "bg-card text-muted-foreground hover:border-primary/40"}`}
+              >
+                <p className="text-sm font-bold text-foreground">{t.name}</p>
+                <p className="mt-1 text-xs">{t.role}</p>
+              </button>
+            ))}
+          </div>
 
-                <div className="relative z-10 flex flex-col h-full">
-                  <Quote
-                    size={24}
-                    className="text-primary/30 mb-4 group-hover:text-primary/60 transition-colors duration-300"
-                  />
-                  <p className="text-foreground leading-relaxed mb-6 flex-grow italic">
-                    "{t.quote}"
-                  </p>
-                  <div className="border-t pt-4">
-                    <p className="font-bold text-sm">{t.name}</p>
-                    <p className="text-xs text-muted-foreground">{t.role}</p>
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-          ))}
+          <motion.div
+            key={activeIndex}
+            initial={shouldReduceMotion ? false : { opacity: 0, rotateY: -10, y: 16 }}
+            animate={{ opacity: 1, rotateY: 0, y: 0 }}
+            transition={{ type: "spring", stiffness: 180, damping: 22 }}
+            className="relative overflow-hidden rounded-3xl border bg-card p-7 shadow-2xl shadow-primary/10 md:p-9"
+            style={{ transformPerspective: 1100, transformStyle: "preserve-3d" }}
+          >
+            <div className="absolute -right-16 -top-16 h-44 w-44 rounded-full bg-primary/10 blur-3xl" />
+            <Quote size={34} className="relative z-10 mb-5 text-primary/40" />
+            <p className="relative z-10 text-lg leading-relaxed text-foreground italic md:text-xl" style={{ transform: "translateZ(28px)" }}>
+              "{activeTestimonial.quote}"
+            </p>
+            <div className="relative z-10 mt-8 border-t pt-5">
+              <p className="font-bold">{activeTestimonial.name}</p>
+              <p className="text-sm text-muted-foreground">{activeTestimonial.role}</p>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -626,7 +706,7 @@ export function FAQSection() {
         <div className="space-y-4">
           {faqs.map((faq, idx) => (
             <FadeIn key={idx} delay={idx * 80}>
-              <div className="bg-card border rounded-2xl overflow-hidden hover:border-primary/30 transition-colors duration-300">
+              <div className="bg-card border rounded-2xl overflow-hidden hover:border-primary/30 transition-colors duration-300 [perspective:900px]">
                 <button
                   onClick={() =>
                     setOpenIndex(openIndex === idx ? null : idx)
@@ -643,7 +723,7 @@ export function FAQSection() {
                   />
                 </button>
                 <div
-                  className={`overflow-hidden transition-all duration-300 ease-in-out ${openIndex === idx ? "max-h-48 opacity-100" : "max-h-0 opacity-0"
+                  className={`origin-top overflow-hidden transition-all duration-300 ease-in-out ${openIndex === idx ? "max-h-48 opacity-100 rotate-x-0" : "max-h-0 opacity-0 -rotate-x-6"
                     }`}
                 >
                   <p className="px-6 pb-6 text-muted-foreground leading-relaxed">

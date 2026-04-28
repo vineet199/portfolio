@@ -135,6 +135,18 @@ const caseStudies = [
     badges: ["Lead capture", "Trust-building", "Mobile-friendly"],
     metric: "Centralized client inquiries",
   },
+  {
+    title: "Hospital Investigation Management",
+    problem: "Hospitals needed a secure, role-aware workspace to order investigations, track lab/radiology status, and keep doctors aligned with pending reviews.",
+    approach: "Built a multi-tenant Supabase-backed dashboard with demo roles, doctor login, investigation stage tracking, department workflows, and reporting views.",
+    result: "Delivered a live clinical operations dashboard where doctors can monitor active investigations, review priorities, and navigate patients, departments, history, and reports from one interface.",
+    tech: ["React", "TypeScript", "Supabase", "Role-Based Auth"],
+    github: "https://github.com/vineet199/hospital-investigations",
+    demo: "https://vineet199.github.io/hospital-investigations/",
+    demoVideoUrl: `${import.meta.env.BASE_URL}assets/videos/hospital_investigations_demo.webp`,
+    badges: ["Doctor workflow", "Multi-tenant", "Role-based dashboard"],
+    metric: "Real-time investigation tracking",
+  },
 ];
 
 /* ─── COMPONENT ─── */
@@ -496,7 +508,7 @@ export default function Freelance() {
               ))}
 
               {/* Main Site Link Card */}
-              <FadeIn delay={150 * 3} className="flex">
+              <FadeIn delay={150 * caseStudies.length} className="flex">
                 <Tilt3DCard className="group relative w-full h-full rounded-2xl">
                   <Link 
                     href="/" 

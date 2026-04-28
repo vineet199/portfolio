@@ -7,7 +7,6 @@ type Project = {
   tech: string[];
   github: string | null;
   demo: string | null;
-  featured?: boolean;
 };
 
 const projects = [
@@ -17,7 +16,6 @@ const projects = [
     tech: ["React", "Redux", "Java", "Kotlin", "Cassandra", "Amazon Neptune", "AWS"],
     github: null,
     demo: null,
-    featured: true
   },
   {
     title: "OCI AI Component Generator",
@@ -25,7 +23,13 @@ const projects = [
     tech: ["LLM APIs", "AI Agent Design", "Preact", "TypeScript", "OCI Console"],
     github: null,
     demo: null,
-    featured: true
+  },
+  {
+    title: "Hospital Investigation Management System",
+    summary: "A multi-tenant hospital investigation workspace with demo doctor login, role-aware navigation, patient and department views, investigation stage tracking, history, reports, and Supabase-backed clinical operations data.",
+    tech: ["React", "TypeScript", "Supabase", "Role-Based Auth", "GitHub Pages"],
+    github: "https://github.com/vineet199/hospital-investigations",
+    demo: "https://vineet199.github.io/hospital-investigations/",
   },
   {
     title: "OCI Alloy Cloud Configurator",
@@ -33,7 +37,6 @@ const projects = [
     tech: ["Preact", "TypeScript", "OCI", "Kubernetes", "Terraform"],
     github: null,
     demo: null,
-    featured: true
   }
 ] satisfies Project[];
 
@@ -152,15 +155,17 @@ export function ProjectsSection() {
                       <Folder size={24} />
                     </div>
                     <div className="flex gap-3">
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-foreground transition-colors"
-                        aria-label={`GitHub repository for ${project.title}`}
-                      >
-                        <FolderGit2 size={20} />
-                      </a>
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-foreground transition-colors"
+                          aria-label={`GitHub repository for ${project.title}`}
+                        >
+                          <FolderGit2 size={20} />
+                        </a>
+                      )}
                       {project.demo && (
                         <a
                           href={project.demo}
